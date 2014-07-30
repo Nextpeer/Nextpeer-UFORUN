@@ -42,6 +42,7 @@ private:
     CCDictionary* _opponentFireBalls; // Of type Key:String (origin power up id + opponent id) Value:OpponentFireBall -> holds the opponent fire balls as rerported from the network
     CCDictionary *_stoppedFireBalls; // Of type Key:String (origin power up id + opponent id) Value:OpponentFireBall -> holds the records of opponents which already stopped so there will not be any network miss (when the client marked as stopped but network stats as moving).
     CCArray* _opponentsSpriteQueue; // In case the avatar sprites message arrived before the current client managed to dispatch its call
+    unsigned int _countOfLivePlayers; // Count of live players, hence not recordings (including the current player)
     bool _hasNotifiedOpponentsSpriteReady; // Making sure the game state notified only once on this state
     
     void applyOpponentUpdate(OpponentUpdate* update); // Make sure the given opponent exists and apply the network update on the opponent sprite

@@ -282,7 +282,7 @@ void GameLayer::updatePlayState(float dt)
                         
                         // Each fire ball can hit only one opponent
                         if (fireBall->isHit(opponent)) {
-
+                            
                             opponent->simulateHitByFireBallIfRequired();
                             
                             shouldRemoveFireBall = true;

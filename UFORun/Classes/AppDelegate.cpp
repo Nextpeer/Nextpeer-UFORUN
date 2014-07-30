@@ -116,8 +116,10 @@ void AppDelegate::initializeNextpeer()
     // 2) Navigate to https://developers.nextpeer.com and create your iOS and an Android game.
     // 3) In the dashboard, add a Game Pool and connect both games you've created in step #2. That's how the users from each platform will be able to play with each other.
     // 4) Paste the iOS game key and the Android game key from our dashboard below.
+
     
-   #error MAKE SURE TO DO THE STEPS ABOVE AND THEN REMOVE THIS LINE.
+    #error MAKE SURE TO DO THE STEPS ABOVE AND THEN REMOVE THIS LINE.
+    // ** Pay attention - You will need to play a few sessions until Nextpeer recording feature will kick in ** /
     
     // Use the proper Nextpeer's game key according to the current platform.
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)

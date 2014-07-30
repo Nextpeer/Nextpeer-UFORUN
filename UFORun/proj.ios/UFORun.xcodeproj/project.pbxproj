@@ -61,6 +61,7 @@
 		4E07E13A1963109800FE64C3 /* PlayerData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E1351963109800FE64C3 /* PlayerData.cpp */; };
 		4E07E13F196310A200FE64C3 /* GameClock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E13B196310A200FE64C3 /* GameClock.cpp */; };
 		4E07E140196310A200FE64C3 /* GameLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E13D196310A200FE64C3 /* GameLevel.cpp */; };
+		4E07E143196313B600FE64C3 /* SimulatedOpponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E141196313B600FE64C3 /* SimulatedOpponent.cpp */; };
 		4E19407F18CDB1D500A68069 /* PlayerSpriteProfile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E19407D18CDB1D500A68069 /* PlayerSpriteProfile.cpp */; };
 		4E19408218CE080200A68069 /* ViewPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E19408018CE080200A68069 /* ViewPort.cpp */; };
 		4E19408718CE1F6D00A68069 /* Hero.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E19408518CE1F6D00A68069 /* Hero.cpp */; };
@@ -229,7 +230,7 @@
 		4E85BE9F18D99C8A003EAE8D /* CocosDenshion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E85BE1218D99C8A003EAE8D /* CocosDenshion.m */; };
 		4E85BEA018D99C8A003EAE8D /* SimpleAudioEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4E85BE1318D99C8A003EAE8D /* SimpleAudioEngine.mm */; };
 		4E85BEA118D99C8A003EAE8D /* SimpleAudioEngine_objc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E85BE1518D99C8A003EAE8D /* SimpleAudioEngine_objc.m */; };
-		4EDC1FED196D41BD00797737 /* SpriteUpdateInterpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4EDC1FEC196D41BD00797737 /* SpriteUpdateInterpolator.cpp */; };
+		4EDC1FF1196D426400797737 /* SpriteUpdateInterpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4EDC1FF0196D426400797737 /* SpriteUpdateInterpolator.cpp */; };
 		4EF5DBE318D202DC00E7FE1E /* PowerUp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4EF5DBE118D202DC00E7FE1E /* PowerUp.cpp */; };
 		4EF5DBE618D2049600E7FE1E /* CCSortableArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4EF5DBE418D2049600E7FE1E /* CCSortableArray.cpp */; };
 		4EF5DBE918D20B0900E7FE1E /* MainMenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4EF5DBE718D20B0900E7FE1E /* MainMenuLayer.cpp */; };
@@ -338,6 +339,8 @@
 		4E07E13C196310A200FE64C3 /* GameClock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameClock.h; path = ../Classes/GameClock.h; sourceTree = "<group>"; };
 		4E07E13D196310A200FE64C3 /* GameLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameLevel.cpp; path = ../Classes/GameLevel.cpp; sourceTree = "<group>"; };
 		4E07E13E196310A200FE64C3 /* GameLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameLevel.h; path = ../Classes/GameLevel.h; sourceTree = "<group>"; };
+		4E07E141196313B600FE64C3 /* SimulatedOpponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SimulatedOpponent.cpp; path = ../Classes/SimulatedOpponent.cpp; sourceTree = "<group>"; };
+		4E07E142196313B600FE64C3 /* SimulatedOpponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimulatedOpponent.h; path = ../Classes/SimulatedOpponent.h; sourceTree = "<group>"; };
 		4E19407D18CDB1D500A68069 /* PlayerSpriteProfile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlayerSpriteProfile.cpp; path = ../Classes/PlayerSpriteProfile.cpp; sourceTree = "<group>"; };
 		4E19407E18CDB1D500A68069 /* PlayerSpriteProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerSpriteProfile.h; path = ../Classes/PlayerSpriteProfile.h; sourceTree = "<group>"; };
 		4E19408018CE080200A68069 /* ViewPort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ViewPort.cpp; path = ../Classes/ViewPort.cpp; sourceTree = "<group>"; };
@@ -679,8 +682,8 @@
 		4E85BE1318D99C8A003EAE8D /* SimpleAudioEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SimpleAudioEngine.mm; sourceTree = "<group>"; };
 		4E85BE1418D99C8A003EAE8D /* SimpleAudioEngine_objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleAudioEngine_objc.h; sourceTree = "<group>"; };
 		4E85BE1518D99C8A003EAE8D /* SimpleAudioEngine_objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleAudioEngine_objc.m; sourceTree = "<group>"; };
-		4EDC1FEB196D41BD00797737 /* SpriteUpdateInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpriteUpdateInterpolator.h; path = ../Classes/SpriteUpdateInterpolator.h; sourceTree = "<group>"; };
-		4EDC1FEC196D41BD00797737 /* SpriteUpdateInterpolator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpriteUpdateInterpolator.cpp; path = ../Classes/SpriteUpdateInterpolator.cpp; sourceTree = "<group>"; };
+		4EDC1FEF196D426400797737 /* SpriteUpdateInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpriteUpdateInterpolator.h; path = ../Classes/SpriteUpdateInterpolator.h; sourceTree = "<group>"; };
+		4EDC1FF0196D426400797737 /* SpriteUpdateInterpolator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpriteUpdateInterpolator.cpp; path = ../Classes/SpriteUpdateInterpolator.cpp; sourceTree = "<group>"; };
 		4EF5DBE118D202DC00E7FE1E /* PowerUp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PowerUp.cpp; path = ../Classes/PowerUp.cpp; sourceTree = "<group>"; };
 		4EF5DBE218D202DC00E7FE1E /* PowerUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PowerUp.h; path = ../Classes/PowerUp.h; sourceTree = "<group>"; };
 		4EF5DBE418D2049600E7FE1E /* CCSortableArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCSortableArray.cpp; path = ../Classes/CCSortableArray.cpp; sourceTree = "<group>"; };
@@ -922,6 +925,8 @@
 		4E07E11819630CAE00FE64C3 /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				4E07E141196313B600FE64C3 /* SimulatedOpponent.cpp */,
+				4E07E142196313B600FE64C3 /* SimulatedOpponent.h */,
 				4E07E12F1963109800FE64C3 /* MultiplayerGameState.cpp */,
 				4E07E1301963109800FE64C3 /* MultiplayerGameState.h */,
 				4E07E1311963109800FE64C3 /* Opponent.cpp */,
@@ -942,8 +947,8 @@
 				4E19C85318D5D6C700BAFC02 /* FireBall.h */,
 				4E19C85518D5D7F500BAFC02 /* HeroFireBall.cpp */,
 				4E19C85618D5D7F500BAFC02 /* HeroFireBall.h */,
-				4EDC1FEB196D41BD00797737 /* SpriteUpdateInterpolator.h */,
-				4EDC1FEC196D41BD00797737 /* SpriteUpdateInterpolator.cpp */,
+				4EDC1FEF196D426400797737 /* SpriteUpdateInterpolator.h */,
+				4EDC1FF0196D426400797737 /* SpriteUpdateInterpolator.cpp */,
 			);
 			name = Logic;
 			sourceTree = "<group>";
@@ -1675,6 +1680,7 @@
 				4E20001D18ABA8AF00730660 /* LHObject.cpp in Sources */,
 				4E85BB7F18D99A8B003EAE8D /* b2Distance.cpp in Sources */,
 				4E85BDB018D99ACA003EAE8D /* AtlasAttachmentLoader.cpp in Sources */,
+				4EDC1FF1196D426400797737 /* SpriteUpdateInterpolator.cpp in Sources */,
 				4E85BD2518D99ACA003EAE8D /* CCBKeyframe.cpp in Sources */,
 				4E19408A18CF183400A68069 /* GameContactListener.cpp in Sources */,
 				4E07E12E1963107C00FE64C3 /* OpponentUpdate.cpp in Sources */,
@@ -1707,7 +1713,6 @@
 				4E07DFC01963057600FE64C3 /* NextpeerTournamentSupport.cpp in Sources */,
 				4E85BD7E18D99ACA003EAE8D /* CCControlPotentiometer.cpp in Sources */,
 				4E85BDB518D99ACA003EAE8D /* CCSkeleton.cpp in Sources */,
-				4EDC1FED196D41BD00797737 /* SpriteUpdateInterpolator.cpp in Sources */,
 				4E85BBA218D99A8B003EAE8D /* b2RevoluteJoint.cpp in Sources */,
 				4E85BB7A18D99A8B003EAE8D /* b2BroadPhase.cpp in Sources */,
 				4EF5DBE918D20B0900E7FE1E /* MainMenuLayer.cpp in Sources */,
@@ -1749,6 +1754,7 @@
 				4E85BB9018D99A8B003EAE8D /* b2World.cpp in Sources */,
 				4E85BD3118D99ACA003EAE8D /* CCLayerLoader.cpp in Sources */,
 				4E85BD3818D99ACA003EAE8D /* CCScale9SpriteLoader.cpp in Sources */,
+				4E07E143196313B600FE64C3 /* SimulatedOpponent.cpp in Sources */,
 				4E85BDB118D99ACA003EAE8D /* Attachment.cpp in Sources */,
 				4E07DFC31963057600FE64C3 /* Nextpeer_iOSDelegate.mm in Sources */,
 				4E07E140196310A200FE64C3 /* GameLevel.cpp in Sources */,

@@ -23,6 +23,7 @@
 #include "CCNextpeer.h"
 #include "ViewPort.h"
 #include "Rand.h"
+#include "SimulatedOpponent.h"
 
 using namespace nextpeer;
 
@@ -46,6 +47,7 @@ MultiplayerGameState::MultiplayerGameState()
     _opponentFireBalls->retain();
     _stoppedFireBalls = CCDictionary::create();
     _stoppedFireBalls->retain();
+    _countOfLivePlayers = 1; // Starting of 1 (the current player is live)
     _opponentsSpriteQueue = CCArray::create();
     _opponentsSpriteQueue->retain();
     _canLoadOpponents = false;
@@ -143,6 +145,10 @@ void MultiplayerGameState::incomingNextpeerDataPacket(CCObject *packet)
 }
 
 void MultiplayerGameState::addOpponent(PlayerData *opponent) {
+    if (!opponent->getIsRecording()) {
+        _countOfLivePlayers++;
+    }
+    
     _opponentsData->setObject(opponent, opponent->getPlayerId());
 }
 
@@ -223,7 +229,15 @@ const string MultiplayerGameState::createFireBallKey(string opponentId, int powe
 }
 
 Opponent *MultiplayerGameState::createOpponentByData(b2World* world, PlayerData *data) {
-    return Opponent::create(world, data);
+    Opponent *retValue = NULL;
+    if (data->getIsRecording()) {
+        retValue = SimulatedOpponent::create(_countOfLivePlayers, world, data);
+    }
+    else {
+        retValue = Opponent::create(world, data);
+    }
+    
+    return retValue;
 }
 
 void MultiplayerGameState::applyOpponentFireBallUpdate(OpponentFireBallUpdateMessage* fireBallUpdate) {

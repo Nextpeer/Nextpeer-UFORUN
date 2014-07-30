@@ -19,8 +19,11 @@ Player::~Player(){
     CC_SAFE_RELEASE_NULL(_speedBoostAction);
 }
 
-Player::Player(GamePlayerProfile *profile, b2World* world) {
+Player::Player(GamePlayerProfile *profile, b2World* world, PlayerData *data) {
     initWithSpriteFrameName(profile->spriteStandName());
+    
+    _playerData = data;
+    _playerData->retain();
     
     _profile = profile;
     _profile->retain();

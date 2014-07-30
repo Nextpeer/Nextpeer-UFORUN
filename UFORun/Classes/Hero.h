@@ -57,7 +57,7 @@ private:
     void hurtAnimationFinished();
     
 protected:
-	Hero(GamePlayerProfile *profile, b2World* world);
+	Hero(GamePlayerProfile *profile, b2World* world, PlayerData *data);
     
 public:
     static Hero* create(b2World* world);

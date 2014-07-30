@@ -50,6 +50,17 @@
 		4E07E1111963057600FE64C3 /* Nextpeer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E07DFAF1963057600FE64C3 /* Nextpeer.framework */; };
 		4E07E1131963057600FE64C3 /* NPResources_iPad_iPhone_Landscape.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4E07DFB21963057600FE64C3 /* NPResources_iPad_iPhone_Landscape.bundle */; };
 		4E07E11B19630CFC00FE64C3 /* NextpeerDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E11919630CFC00FE64C3 /* NextpeerDelegate.cpp */; };
+		4E07E12A1963107C00FE64C3 /* MessageParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E11F1963107C00FE64C3 /* MessageParser.cpp */; };
+		4E07E12B1963107C00FE64C3 /* MultiplayerMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E1211963107C00FE64C3 /* MultiplayerMessage.cpp */; };
+		4E07E12C1963107C00FE64C3 /* OpponentAvatarNotificationMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E1241963107C00FE64C3 /* OpponentAvatarNotificationMessage.cpp */; };
+		4E07E12D1963107C00FE64C3 /* OpponentFireBallUpdateMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E1261963107C00FE64C3 /* OpponentFireBallUpdateMessage.cpp */; };
+		4E07E12E1963107C00FE64C3 /* OpponentUpdate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E1281963107C00FE64C3 /* OpponentUpdate.cpp */; };
+		4E07E1371963109800FE64C3 /* MultiplayerGameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E12F1963109800FE64C3 /* MultiplayerGameState.cpp */; };
+		4E07E1381963109800FE64C3 /* Opponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E1311963109800FE64C3 /* Opponent.cpp */; };
+		4E07E1391963109800FE64C3 /* OpponentFireBall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E1331963109800FE64C3 /* OpponentFireBall.cpp */; };
+		4E07E13A1963109800FE64C3 /* PlayerData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E1351963109800FE64C3 /* PlayerData.cpp */; };
+		4E07E13F196310A200FE64C3 /* GameClock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E13B196310A200FE64C3 /* GameClock.cpp */; };
+		4E07E140196310A200FE64C3 /* GameLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E07E13D196310A200FE64C3 /* GameLevel.cpp */; };
 		4E19407F18CDB1D500A68069 /* PlayerSpriteProfile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E19407D18CDB1D500A68069 /* PlayerSpriteProfile.cpp */; };
 		4E19408218CE080200A68069 /* ViewPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E19408018CE080200A68069 /* ViewPort.cpp */; };
 		4E19408718CE1F6D00A68069 /* Hero.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E19408518CE1F6D00A68069 /* Hero.cpp */; };
@@ -218,6 +229,7 @@
 		4E85BE9F18D99C8A003EAE8D /* CocosDenshion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E85BE1218D99C8A003EAE8D /* CocosDenshion.m */; };
 		4E85BEA018D99C8A003EAE8D /* SimpleAudioEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4E85BE1318D99C8A003EAE8D /* SimpleAudioEngine.mm */; };
 		4E85BEA118D99C8A003EAE8D /* SimpleAudioEngine_objc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E85BE1518D99C8A003EAE8D /* SimpleAudioEngine_objc.m */; };
+		4EDC1FED196D41BD00797737 /* SpriteUpdateInterpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4EDC1FEC196D41BD00797737 /* SpriteUpdateInterpolator.cpp */; };
 		4EF5DBE318D202DC00E7FE1E /* PowerUp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4EF5DBE118D202DC00E7FE1E /* PowerUp.cpp */; };
 		4EF5DBE618D2049600E7FE1E /* CCSortableArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4EF5DBE418D2049600E7FE1E /* CCSortableArray.cpp */; };
 		4EF5DBE918D20B0900E7FE1E /* MainMenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4EF5DBE718D20B0900E7FE1E /* MainMenuLayer.cpp */; };
@@ -303,6 +315,29 @@
 		4E07DFB21963057600FE64C3 /* NPResources_iPad_iPhone_Landscape.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = NPResources_iPad_iPhone_Landscape.bundle; sourceTree = "<group>"; };
 		4E07E11919630CFC00FE64C3 /* NextpeerDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NextpeerDelegate.cpp; path = ../Classes/NextpeerDelegate.cpp; sourceTree = "<group>"; };
 		4E07E11A19630CFC00FE64C3 /* NextpeerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NextpeerDelegate.h; path = ../Classes/NextpeerDelegate.h; sourceTree = "<group>"; };
+		4E07E11F1963107C00FE64C3 /* MessageParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MessageParser.cpp; path = ../Classes/MessageParser.cpp; sourceTree = "<group>"; };
+		4E07E1201963107C00FE64C3 /* MessageParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageParser.h; path = ../Classes/MessageParser.h; sourceTree = "<group>"; };
+		4E07E1211963107C00FE64C3 /* MultiplayerMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MultiplayerMessage.cpp; path = ../Classes/MultiplayerMessage.cpp; sourceTree = "<group>"; };
+		4E07E1221963107C00FE64C3 /* MultiplayerMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MultiplayerMessage.h; path = ../Classes/MultiplayerMessage.h; sourceTree = "<group>"; };
+		4E07E1231963107C00FE64C3 /* MultiplayerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MultiplayerProtocol.h; path = ../Classes/MultiplayerProtocol.h; sourceTree = "<group>"; };
+		4E07E1241963107C00FE64C3 /* OpponentAvatarNotificationMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OpponentAvatarNotificationMessage.cpp; path = ../Classes/OpponentAvatarNotificationMessage.cpp; sourceTree = "<group>"; };
+		4E07E1251963107C00FE64C3 /* OpponentAvatarNotificationMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpponentAvatarNotificationMessage.h; path = ../Classes/OpponentAvatarNotificationMessage.h; sourceTree = "<group>"; };
+		4E07E1261963107C00FE64C3 /* OpponentFireBallUpdateMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OpponentFireBallUpdateMessage.cpp; path = ../Classes/OpponentFireBallUpdateMessage.cpp; sourceTree = "<group>"; };
+		4E07E1271963107C00FE64C3 /* OpponentFireBallUpdateMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpponentFireBallUpdateMessage.h; path = ../Classes/OpponentFireBallUpdateMessage.h; sourceTree = "<group>"; };
+		4E07E1281963107C00FE64C3 /* OpponentUpdate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OpponentUpdate.cpp; path = ../Classes/OpponentUpdate.cpp; sourceTree = "<group>"; };
+		4E07E1291963107C00FE64C3 /* OpponentUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpponentUpdate.h; path = ../Classes/OpponentUpdate.h; sourceTree = "<group>"; };
+		4E07E12F1963109800FE64C3 /* MultiplayerGameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MultiplayerGameState.cpp; path = ../Classes/MultiplayerGameState.cpp; sourceTree = "<group>"; };
+		4E07E1301963109800FE64C3 /* MultiplayerGameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MultiplayerGameState.h; path = ../Classes/MultiplayerGameState.h; sourceTree = "<group>"; };
+		4E07E1311963109800FE64C3 /* Opponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Opponent.cpp; path = ../Classes/Opponent.cpp; sourceTree = "<group>"; };
+		4E07E1321963109800FE64C3 /* Opponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Opponent.h; path = ../Classes/Opponent.h; sourceTree = "<group>"; };
+		4E07E1331963109800FE64C3 /* OpponentFireBall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OpponentFireBall.cpp; path = ../Classes/OpponentFireBall.cpp; sourceTree = "<group>"; };
+		4E07E1341963109800FE64C3 /* OpponentFireBall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpponentFireBall.h; path = ../Classes/OpponentFireBall.h; sourceTree = "<group>"; };
+		4E07E1351963109800FE64C3 /* PlayerData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlayerData.cpp; path = ../Classes/PlayerData.cpp; sourceTree = "<group>"; };
+		4E07E1361963109800FE64C3 /* PlayerData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerData.h; path = ../Classes/PlayerData.h; sourceTree = "<group>"; };
+		4E07E13B196310A200FE64C3 /* GameClock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameClock.cpp; path = ../Classes/GameClock.cpp; sourceTree = "<group>"; };
+		4E07E13C196310A200FE64C3 /* GameClock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameClock.h; path = ../Classes/GameClock.h; sourceTree = "<group>"; };
+		4E07E13D196310A200FE64C3 /* GameLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameLevel.cpp; path = ../Classes/GameLevel.cpp; sourceTree = "<group>"; };
+		4E07E13E196310A200FE64C3 /* GameLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameLevel.h; path = ../Classes/GameLevel.h; sourceTree = "<group>"; };
 		4E19407D18CDB1D500A68069 /* PlayerSpriteProfile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlayerSpriteProfile.cpp; path = ../Classes/PlayerSpriteProfile.cpp; sourceTree = "<group>"; };
 		4E19407E18CDB1D500A68069 /* PlayerSpriteProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerSpriteProfile.h; path = ../Classes/PlayerSpriteProfile.h; sourceTree = "<group>"; };
 		4E19408018CE080200A68069 /* ViewPort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ViewPort.cpp; path = ../Classes/ViewPort.cpp; sourceTree = "<group>"; };
@@ -644,6 +679,8 @@
 		4E85BE1318D99C8A003EAE8D /* SimpleAudioEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SimpleAudioEngine.mm; sourceTree = "<group>"; };
 		4E85BE1418D99C8A003EAE8D /* SimpleAudioEngine_objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleAudioEngine_objc.h; sourceTree = "<group>"; };
 		4E85BE1518D99C8A003EAE8D /* SimpleAudioEngine_objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleAudioEngine_objc.m; sourceTree = "<group>"; };
+		4EDC1FEB196D41BD00797737 /* SpriteUpdateInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpriteUpdateInterpolator.h; path = ../Classes/SpriteUpdateInterpolator.h; sourceTree = "<group>"; };
+		4EDC1FEC196D41BD00797737 /* SpriteUpdateInterpolator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpriteUpdateInterpolator.cpp; path = ../Classes/SpriteUpdateInterpolator.cpp; sourceTree = "<group>"; };
 		4EF5DBE118D202DC00E7FE1E /* PowerUp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PowerUp.cpp; path = ../Classes/PowerUp.cpp; sourceTree = "<group>"; };
 		4EF5DBE218D202DC00E7FE1E /* PowerUp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PowerUp.h; path = ../Classes/PowerUp.h; sourceTree = "<group>"; };
 		4EF5DBE418D2049600E7FE1E /* CCSortableArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCSortableArray.cpp; path = ../Classes/CCSortableArray.cpp; sourceTree = "<group>"; };
@@ -715,6 +752,7 @@
 		15AA9C4015B7EC450033D6C2 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				4E07E11E19630FF400FE64C3 /* Messaging */,
 				4E07E11819630CAE00FE64C3 /* Logic */,
 				4E07DE1D1963057500FE64C3 /* Nextpeer */,
 				4E20FFD018ABA8AF00730660 /* LevelHelper */,
@@ -734,6 +772,10 @@
 				4EF5DBE518D2049600E7FE1E /* CCSortableArray.h */,
 				4E19C85818D5DEDB00BAFC02 /* CCBox2DPhysicsRotateBy.cpp */,
 				4E19C85918D5DEDB00BAFC02 /* CCBox2DPhysicsRotateBy.h */,
+				4E07E13B196310A200FE64C3 /* GameClock.cpp */,
+				4E07E13C196310A200FE64C3 /* GameClock.h */,
+				4E07E13D196310A200FE64C3 /* GameLevel.cpp */,
+				4E07E13E196310A200FE64C3 /* GameLevel.h */,
 			);
 			name = Classes;
 			path = ../classes;
@@ -880,6 +922,14 @@
 		4E07E11819630CAE00FE64C3 /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				4E07E12F1963109800FE64C3 /* MultiplayerGameState.cpp */,
+				4E07E1301963109800FE64C3 /* MultiplayerGameState.h */,
+				4E07E1311963109800FE64C3 /* Opponent.cpp */,
+				4E07E1321963109800FE64C3 /* Opponent.h */,
+				4E07E1331963109800FE64C3 /* OpponentFireBall.cpp */,
+				4E07E1341963109800FE64C3 /* OpponentFireBall.h */,
+				4E07E1351963109800FE64C3 /* PlayerData.cpp */,
+				4E07E1361963109800FE64C3 /* PlayerData.h */,
 				4E200E0C18B2965800730660 /* Player.cpp */,
 				4E200E0D18B2965800730660 /* Player.h */,
 				4E19407D18CDB1D500A68069 /* PlayerSpriteProfile.cpp */,
@@ -892,8 +942,28 @@
 				4E19C85318D5D6C700BAFC02 /* FireBall.h */,
 				4E19C85518D5D7F500BAFC02 /* HeroFireBall.cpp */,
 				4E19C85618D5D7F500BAFC02 /* HeroFireBall.h */,
+				4EDC1FEB196D41BD00797737 /* SpriteUpdateInterpolator.h */,
+				4EDC1FEC196D41BD00797737 /* SpriteUpdateInterpolator.cpp */,
 			);
 			name = Logic;
+			sourceTree = "<group>";
+		};
+		4E07E11E19630FF400FE64C3 /* Messaging */ = {
+			isa = PBXGroup;
+			children = (
+				4E07E11F1963107C00FE64C3 /* MessageParser.cpp */,
+				4E07E1201963107C00FE64C3 /* MessageParser.h */,
+				4E07E1211963107C00FE64C3 /* MultiplayerMessage.cpp */,
+				4E07E1221963107C00FE64C3 /* MultiplayerMessage.h */,
+				4E07E1231963107C00FE64C3 /* MultiplayerProtocol.h */,
+				4E07E1241963107C00FE64C3 /* OpponentAvatarNotificationMessage.cpp */,
+				4E07E1251963107C00FE64C3 /* OpponentAvatarNotificationMessage.h */,
+				4E07E1261963107C00FE64C3 /* OpponentFireBallUpdateMessage.cpp */,
+				4E07E1271963107C00FE64C3 /* OpponentFireBallUpdateMessage.h */,
+				4E07E1281963107C00FE64C3 /* OpponentUpdate.cpp */,
+				4E07E1291963107C00FE64C3 /* OpponentUpdate.h */,
+			);
+			name = Messaging;
 			sourceTree = "<group>";
 		};
 		4E20FFD018ABA8AF00730660 /* LevelHelper */ = {
@@ -1607,6 +1677,7 @@
 				4E85BDB018D99ACA003EAE8D /* AtlasAttachmentLoader.cpp in Sources */,
 				4E85BD2518D99ACA003EAE8D /* CCBKeyframe.cpp in Sources */,
 				4E19408A18CF183400A68069 /* GameContactListener.cpp in Sources */,
+				4E07E12E1963107C00FE64C3 /* OpponentUpdate.cpp in Sources */,
 				4E85BB9A18D99A8B003EAE8D /* b2PolygonContact.cpp in Sources */,
 				4E85BD8418D99ACA003EAE8D /* CCInvocation.cpp in Sources */,
 				4E85BEA018D99C8A003EAE8D /* SimpleAudioEngine.mm in Sources */,
@@ -1636,6 +1707,7 @@
 				4E07DFC01963057600FE64C3 /* NextpeerTournamentSupport.cpp in Sources */,
 				4E85BD7E18D99ACA003EAE8D /* CCControlPotentiometer.cpp in Sources */,
 				4E85BDB518D99ACA003EAE8D /* CCSkeleton.cpp in Sources */,
+				4EDC1FED196D41BD00797737 /* SpriteUpdateInterpolator.cpp in Sources */,
 				4E85BBA218D99A8B003EAE8D /* b2RevoluteJoint.cpp in Sources */,
 				4E85BB7A18D99A8B003EAE8D /* b2BroadPhase.cpp in Sources */,
 				4EF5DBE918D20B0900E7FE1E /* MainMenuLayer.cpp in Sources */,
@@ -1647,8 +1719,10 @@
 				4E19C85A18D5DEDB00BAFC02 /* CCBox2DPhysicsRotateBy.cpp in Sources */,
 				4E85BB9518D99A8B003EAE8D /* b2Contact.cpp in Sources */,
 				4E85BB8418D99A8B003EAE8D /* b2EdgeShape.cpp in Sources */,
+				4E07E12B1963107C00FE64C3 /* MultiplayerMessage.cpp in Sources */,
 				4E85BD9318D99ACA003EAE8D /* HttpClient.cpp in Sources */,
 				4E85BB9E18D99A8B003EAE8D /* b2Joint.cpp in Sources */,
+				4E07E13A1963109800FE64C3 /* PlayerData.cpp in Sources */,
 				4E85BD7D18D99ACA003EAE8D /* CCControlHuePicker.cpp in Sources */,
 				4E85BD9418D99ACA003EAE8D /* WebSocket.cpp in Sources */,
 				4E85BB8518D99A8B003EAE8D /* b2PolygonShape.cpp in Sources */,
@@ -1665,8 +1739,10 @@
 				4E19408718CE1F6D00A68069 /* Hero.cpp in Sources */,
 				4E20001318ABA8AF00730660 /* LHLayer.cpp in Sources */,
 				4E07E11B19630CFC00FE64C3 /* NextpeerDelegate.cpp in Sources */,
+				4E07E12A1963107C00FE64C3 /* MessageParser.cpp in Sources */,
 				4E85BD8E18D99ACA003EAE8D /* CCSorting.cpp in Sources */,
 				4E85BD2318D99ACA003EAE8D /* CCBAnimationManager.cpp in Sources */,
+				4E07E12C1963107C00FE64C3 /* OpponentAvatarNotificationMessage.cpp in Sources */,
 				4E20001118ABA8AF00730660 /* LHFixture.cpp in Sources */,
 				4E85BD2618D99ACA003EAE8D /* CCBReader.cpp in Sources */,
 				4E85BD3418D99ACA003EAE8D /* CCNode+CCBRelativePositioning.cpp in Sources */,
@@ -1675,6 +1751,7 @@
 				4E85BD3818D99ACA003EAE8D /* CCScale9SpriteLoader.cpp in Sources */,
 				4E85BDB118D99ACA003EAE8D /* Attachment.cpp in Sources */,
 				4E07DFC31963057600FE64C3 /* Nextpeer_iOSDelegate.mm in Sources */,
+				4E07E140196310A200FE64C3 /* GameLevel.cpp in Sources */,
 				4E85BBA318D99A8B003EAE8D /* b2RopeJoint.cpp in Sources */,
 				4E85BDBE18D99ACA003EAE8D /* Slot.cpp in Sources */,
 				4E85BEA118D99C8A003EAE8D /* SimpleAudioEngine_objc.m in Sources */,
@@ -1688,12 +1765,14 @@
 				4E85BB9118D99A8B003EAE8D /* b2WorldCallbacks.cpp in Sources */,
 				4E85BD8F18D99ACA003EAE8D /* CCTableView.cpp in Sources */,
 				1AFAF8B716D35DE700DB1158 /* AppDelegate.cpp in Sources */,
+				4E07E1381963109800FE64C3 /* Opponent.cpp in Sources */,
 				4E85BD3918D99ACA003EAE8D /* CCScrollViewLoader.cpp in Sources */,
 				4E85BDB618D99ACA003EAE8D /* CCSkeletonAnimation.cpp in Sources */,
 				4E85BD3A18D99ACA003EAE8D /* CCSpriteLoader.cpp in Sources */,
 				4E07DFBD1963057600FE64C3 /* NextpeerEventQueue.cpp in Sources */,
 				4E85BD2818D99ACA003EAE8D /* CCBSequenceProperty.cpp in Sources */,
 				4E85BB7D18D99A8B003EAE8D /* b2CollidePolygon.cpp in Sources */,
+				4E07E12D1963107C00FE64C3 /* OpponentFireBallUpdateMessage.cpp in Sources */,
 				4E85BDB918D99ACA003EAE8D /* RegionAttachment.cpp in Sources */,
 				4E200E0E18B2965800730660 /* Player.cpp in Sources */,
 				4E85BB8118D99A8B003EAE8D /* b2TimeOfImpact.cpp in Sources */,
@@ -1702,6 +1781,7 @@
 				4E85BB9F18D99A8B003EAE8D /* b2MouseJoint.cpp in Sources */,
 				4E85BBBD18D99A8B003EAE8D /* b2Rope.cpp in Sources */,
 				4E85BD2E18D99ACA003EAE8D /* CCLabelTTFLoader.cpp in Sources */,
+				4E07E1371963109800FE64C3 /* MultiplayerGameState.cpp in Sources */,
 				4E85BD7F18D99ACA003EAE8D /* CCControlSaturationBrightnessPicker.cpp in Sources */,
 				4E85BD2B18D99ACA003EAE8D /* CCControlLoader.cpp in Sources */,
 				4E85BDAC18D99ACA003EAE8D /* Animation.cpp in Sources */,
@@ -1717,6 +1797,7 @@
 				1AFCDA8216D4A25900906EA6 /* RootViewController.mm in Sources */,
 				4E19407F18CDB1D500A68069 /* PlayerSpriteProfile.cpp in Sources */,
 				4E85BDB318D99ACA003EAE8D /* Bone.cpp in Sources */,
+				4E07E1391963109800FE64C3 /* OpponentFireBall.cpp in Sources */,
 				4E85BBA118D99A8B003EAE8D /* b2PulleyJoint.cpp in Sources */,
 				4E20001B18ABA8AF00730660 /* LHArray.cpp in Sources */,
 				4E85BD7B18D99ACA003EAE8D /* CCControlButton.cpp in Sources */,
@@ -1742,6 +1823,7 @@
 				4E20000E18ABA8AF00730660 /* LHContactNode.cpp in Sources */,
 				4E85BDAD18D99ACA003EAE8D /* AnimationState.cpp in Sources */,
 				4E85BB8918D99A8B003EAE8D /* b2Settings.cpp in Sources */,
+				4E07E13F196310A200FE64C3 /* GameClock.cpp in Sources */,
 				4E85BDC018D99ACA003EAE8D /* spine-cocos2dx.cpp in Sources */,
 				4E85BBA418D99A8B003EAE8D /* b2WeldJoint.cpp in Sources */,
 				4E85BE9D18D99C8A003EAE8D /* CDAudioManager.m in Sources */,

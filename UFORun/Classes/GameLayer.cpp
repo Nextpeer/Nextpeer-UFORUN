@@ -8,6 +8,7 @@
 
 #include "GameLayer.h"
 
+#include "CCNextpeer.h"
 #include "Hero.h"
 #include "ViewPort.h"
 #include "GameContactListener.h"
@@ -15,18 +16,32 @@
 #include "CCSortableArray.h"
 #include "MainMenuLayer.h"
 #include "HeroFireBall.h"
-#include "CCNextpeer.h"
-
-using namespace nextpeer;
+#include "OpponentFireBall.h"
+#include "GameClock.h"
+#include "MultiplayerGameState.h"
+#include "Opponent.h"
+#include "GameLevel.h"
+#include "Rand.h"
 
 #define HUD_ITEMS_SPACING 10.0f
+
+#define MAX_WAIT_FOR_OPPONENT_SPRITES_SIGNAL_SECONDS 5
+#define PRE_GAME_COUNT_DOWN_SECONDS 4
+
+#define MAX_WAIT_FOR_GAMES_IMAGES 4 // Should be the same as PRE_GAME_COUNT_DOWN_SECONDS (from the InGame.plist atlas)
+
+#define kStartGameSyncEventName "com.nextpeer.uforun.syncevet.startgame"
+#define kStartGameSyncEventTimeout 10.0
+
+// The maximum time in the level that will yield a bonus
+#define LEVEL_MAX_TIME 100.0f
 
 #define BM_FONT_NAME "font.fnt"
 #define TTF_FONT_NAME "Thonburi"
 #define TTF_BONUS_TITLE_FONT_SIZE 30
+#define TTF_LOADING_TITLE_FONT_SIZE 40
 
-// The maximum time in the level that will yield a bonus
-#define LEVEL_MAX_TIME 100.0f
+using namespace nextpeer;
 
 typedef enum
 {
@@ -35,7 +50,7 @@ typedef enum
     
 } GameLayerZOrder;
 
-CCScene* GameLayer::scene()
+CCScene* GameLayer::scene(MultiplayerGameState* multiplayerGameState)
 {
 	CCScene * scene = NULL;
 	do
@@ -44,8 +59,8 @@ CCScene* GameLayer::scene()
 		scene = CCScene::create();
 		CC_BREAK_IF(! scene);
         
-		// 'layer' is an autorelease object
-        GameLayer *layer = GameLayer::create();
+        // 'layer' is an autorelease object
+        GameLayer *layer = GameLayer::create(multiplayerGameState);
 		CC_BREAK_IF(! layer);
         
 		// add layer as a child to scene
@@ -61,15 +76,22 @@ GameLayer::~GameLayer()
     CC_SAFE_DELETE(_loader);
     CC_SAFE_DELETE(_world);
     
+    CC_SAFE_RELEASE_NULL(_multiplayerGameState);
+    
     CC_SAFE_RELEASE_NULL(_player);
     CC_SAFE_RELEASE_NULL(_gameLayer);
+    CC_SAFE_RELEASE_NULL(_loadingLayer);
     CC_SAFE_RELEASE_NULL(_hudLayer);
     CC_SAFE_RELEASE_NULL(_collectedPowerUp);
     CC_SAFE_RELEASE_NULL(_heroFireBalls);
+    CC_SAFE_RELEASE_NULL(_powerUpBoxes);
+    
+    // Remove all observers
+    CCNotificationCenter::sharedNotificationCenter()->removeAllObservers(this);
 }
 
 // on "init" you need to initialize your instance
-bool GameLayer::init()
+bool GameLayer::init(MultiplayerGameState* multiplayerGameState)
 {
 	bool bRet = false;
 	do
@@ -77,6 +99,13 @@ bool GameLayer::init()
         //////////////////////////////
         // 1. super init first
         CC_BREAK_IF(! CCLayer::init());
+        
+        _multiplayerGameState = multiplayerGameState;
+        _multiplayerGameState->retain();
+        _multiplayerGameState->listenForIncomingPackets();
+        
+        // Get the screen size
+        _screenSize = CCDirector::sharedDirector()->getWinSize();
         
         _gameLayer = NULL;
         
@@ -88,15 +117,30 @@ bool GameLayer::init()
         _score = 0;
         _timeSpentRunningInSeconds = 0;
         _timeSinceLastScoreReport = 0;
+        _multiplayerUpdateSentCounter = 0.0f;
+        _startGameCounter = 0;
         
         _player = NULL;
         _gameLayer = NULL;
         _powerUpBoxes = NULL;
         _collectedPowerUp = NULL;
         _hudLayer = NULL;
-        _heroFireBalls = NULL;
+        _loadingLayer = NULL;
         
-        loadLevelAssets();
+        _heroFireBalls = CCArray::create();
+        _heroFireBalls->retain();
+        
+        CCNotificationCenter::sharedNotificationCenter()->addObserver(this,
+                                                                      callfuncO_selector(GameLayer::multiplayerGameStateReady),
+                                                                      MULTIPLAYER_NOTIFICATION_OPPONENTS_SPRITES_READY,
+                                                                      NULL);
+        
+        CCNotificationCenter::sharedNotificationCenter()->addObserver(this,
+                                                                      callfuncO_selector(GameLayer::readyToStartGameCallback),
+                                                                      NEXTPEER_NOTIFICATION_RECEIVE_SYNCHRONIZED_EVENT,
+                                                                      NULL);
+        
+        loadGameLoadState();
         
         //create main loop
         this->schedule(schedule_selector(GameLayer::update));
@@ -112,8 +156,25 @@ bool GameLayer::init()
 
 void GameLayer::update(float dt)
 {
-    if (_state != kGamePlay) return;
+    // Update the game clock only when the game has started for all connected players (post sync event)
+    if (_state == kGamePlay || _state == kGameStartCountDown) {
+        GameClock::getInstance()->update(dt);
+    }
     
+    switch (_state) {
+        case kGamePlay: {
+            
+            updatePlayState(dt);
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+}
+
+void GameLayer::updatePlayState(float dt)
+{
     int velocityIterations = 8;
     int positionIterations = 1;
     
@@ -158,6 +219,99 @@ void GameLayer::update(float dt)
     _hudLayer->setPosition(hudPosition);
     
     ViewPort::getInstance()->setScreenStartXPosition(this->getPositionX());
+    
+    // Update opponents
+    CCArray* opponents = _multiplayerGameState->getAllOpponents();
+    if (opponents) {
+        unsigned int count = opponents->count();
+        for (unsigned int i = 0; i < count; i++) {
+            Opponent* opponent = (Opponent*)opponents->objectAtIndex(i);
+            opponent->update(dt);
+        }
+    }
+    
+    // Update opponents fire balls movements
+    CCArray* opponentFireBalls = _multiplayerGameState->getAllOpponentFireBalls();
+    if (opponentFireBalls) {
+        
+        // Update the fire balls
+        CCObject* it = NULL;
+        
+        bool shouldRemoveFireBall = false;
+        CCARRAY_FOREACH_REVERSE(opponentFireBalls, it)
+        {
+            OpponentFireBall *fireBall = static_cast<OpponentFireBall*>(it);
+            
+            // If the fireball is not visible, don't try to calculate the hit -> skip
+            if (!fireBall->isVisible()) {
+                continue;
+            }
+            shouldRemoveFireBall = false;
+            
+            // If the fire fireball has timed out, don't bother update it
+            if (fireBall->hasTimedOut()) {
+                shouldRemoveFireBall = true;
+            }
+            else {
+                // Update the fire ball
+                fireBall->update(dt);
+                
+                // If the hero has no shield and the fire ball hit the hero, notify the hero object (state change, animation change)
+                if (_player -> getHeroPowerUpState() != kHeroPowerUpStateShield && fireBall->isHit(_player)) {
+                    
+                    // This will change the hero state as well as applying animation on the player
+                    _player->hitByFireBall();
+                    shouldRemoveFireBall = true;
+                }
+                // Else, check hit on other opponents (if there are any) opponent fire ball on another opponent
+                else if (opponents) {
+                    CCObject* it = NULL;
+                    CCARRAY_FOREACH(opponents, it)
+                    {
+                        Opponent *opponent = static_cast<Opponent*>(it);
+                        
+                        // Skip this opponent has a shield
+                        if (opponent->getOpponentPowerUpState() == kOpponentPowerUpStateShield) {
+                            continue;
+                        }
+                        
+                        // Opponent cannot hit itself.
+                        if ( opponent->getPlayerData()->getPlayerId() == fireBall->getFromOpponentId()) {
+                            continue;
+                        }
+                        
+                        // Each fire ball can hit only one opponent
+                        if (fireBall->isHit(opponent)) {
+
+                            opponent->simulateHitByFireBallIfRequired();
+                            
+                            shouldRemoveFireBall = true;
+                            
+                            // Can only hit one opponent
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            // If the fire ball should be removed, mark it as invisible, and remove from the parent & game state
+            if (shouldRemoveFireBall || (fireBall->getFireBallState() == kFireBallStopped)) {
+                
+                // This will make the fire ball will not visible any more
+                fireBall->setVisible(false);
+                fireBall->removeFromParent();
+                
+                fireBall->markAsStopped(); // Make sure it marked as stopped (it can be that it has timedout)
+            }
+            // Else (not stopped fire ball) Add the fireball and advance it
+            else if (fireBall->getParent() == NULL) {
+                _charactersBatchNode->addChild(fireBall);
+            }
+        }
+        
+        // Trim the fire balls which are not valid any more (timed out & invalid)
+        _multiplayerGameState->trimOpponentFireBalls();
+    }
     
     // Handling the hero states
     HeroState heroState = _player->getHeroState();
@@ -272,9 +426,35 @@ void GameLayer::update(float dt)
             HeroFireBall *fireBall = static_cast<HeroFireBall*>(it);
             
             fireBall->update(dt);
+            _multiplayerGameState->dispatchUpdateForFireBall(fireBall);
+            
+            bool hasFireBallStopped = (fireBall->getFireBallState() == kFireBallStopped);
+            
+            // If we still have a fire ball (going on). Check if hte fire ball  hit any of the opponents
+            if (!hasFireBallStopped && opponents) {
+                CCObject* it = NULL;
+                CCARRAY_FOREACH(opponents, it)
+                {
+                    Opponent *opponent = static_cast<Opponent*>(it);
+                    
+                    // Skip this opponent has a shield
+                    if (opponent->getOpponentPowerUpState() == kOpponentPowerUpStateShield) {
+                        continue;
+                    }
+                    
+                    // Each fire ball can hit only one opponent
+                    if (fireBall->isHit(opponent)) {
+                        opponent->simulateHitByFireBallIfRequired();
+                        hasFireBallStopped = true;
+                        
+                        // Can only hit one opponent
+                        break;
+                    }
+                }
+            }
             
             // If the fire ball has stopped, remove it from the rendering loop
-            if ((fireBall->getFireBallState() == kFireBallStopped)) {
+            if (hasFireBallStopped) {
                 fireBall->setVisible(false);
                 fireBall->removeFromParent();
                 _heroFireBalls->removeObjectAtIndex(heroFireBallsIndex);
@@ -283,78 +463,208 @@ void GameLayer::update(float dt)
         }
     }
     
+    // Send an update about our player if needed
+    if (_multiplayerUpdateSentCounter % 2 == 0) {
+        _multiplayerGameState->dispatchUpdateForHero(_player);
+    }
+    _multiplayerUpdateSentCounter++;
+    
     // Send a score update every 1 second
     _timeSinceLastScoreReport += dt;
     if (_timeSinceLastScoreReport > 1.0f) {
         CCNextpeer::getInstance()->reportScoreForCurrentTournament((unsigned int)_score);
         _timeSinceLastScoreReport = 0.0f;
     }
+    
+}
+
+void GameLayer::startGameCountDown(float dt) {
+    CCNode *currentCountDown = NULL;
+    if (_startGameCounter == 0){
+        
+        CCNotificationCenter::sharedNotificationCenter()->postNotification(MULTIPLAYER_NOTIFICATION_SHOULD_START_GAME);
+        currentCountDown = CCSprite::createWithSpriteFrameName("hud_wait_go.png");
+        this->unschedule(schedule_selector(GameLayer::startGameCountDown));
+        _state = kGamePlay;
+    }
+    else if (_startGameCounter <= MAX_WAIT_FOR_GAMES_IMAGES){
+        char szValue[100] = {0};
+        sprintf(szValue, "hud_wait_%i.png", (int) _startGameCounter);
+        currentCountDown = CCSprite::createWithSpriteFrameName(szValue);
+        _startGameCounter--;
+    }
+    
+    if (currentCountDown == NULL) return;
+    
+    currentCountDown->setVisible(false);
+    _hudBatchNode->addChild(currentCountDown);
+    
+    CCFiniteTimeAction* action = CCSequence::create(
+                                                    CCPlace::create(ccp(_screenSize.width/2, _screenSize.height/2)),
+                                                    CCShow::create(),
+                                                    CCSpawn::create(CCScaleBy::create(1.0, 1.5), CCFadeOut::create(1.0), NULL),
+                                                    CCCallFuncN::create(this, callfuncN_selector(GameLayer::callbackstartGameCountDownAnimation)),
+                                                    NULL);
+    
+    currentCountDown->runAction(action);
+}
+
+void GameLayer::callbackstartGameCountDownAnimation(CCNode* sender) {
+    _gameLayer->removeChild(sender);
+}
+
+void GameLayer::loadGameLoadState() {
+    _loadingLayer = CCLayerColor::create(ccc4(0, 0, 0, 255));
+    _loadingLayer->retain();
+    _loadingLayer->setContentSize(_screenSize);
+    CCLabelTTF *loadingLevelTitle = CCLabelTTF::create("Loading...", TTF_FONT_NAME, TTF_LOADING_TITLE_FONT_SIZE);
+    loadingLevelTitle->setPosition(ccp(_screenSize.width/2, _screenSize.height/2));
+    _loadingLayer->addChild(loadingLevelTitle);
+    
+    this->addChild(_loadingLayer);
+    
+    _state = kGameLoad;
+    
+    // We loading the level asset. Start after the loading layer has been loaded.
+    this->scheduleOnce(schedule_selector(GameLayer::loadLevelAssets), 0.1);
 }
 
 void GameLayer::loadLevelAssets() {
     
-    _state = kGameLoad;
-    
-    // Get the screen size
-    _screenSize = CCDirector::sharedDirector()->getWinSize();
-    
+    // Create the game layer but hide it at first (we will display it once the level has loaded)
     _gameLayer = CCLayer::create();
     _gameLayer->retain();
     _gameLayer->setContentSize(_screenSize);
+    _gameLayer->setVisible(false);
     
     _hudLayer = CCLayer::create();
     _hudLayer->retain();
     _hudLayer->setContentSize(_gameLayer->getContentSize());
     
+    // Create the Box2D world
     b2Vec2 gravity;
     gravity.Set(0.0f, -10.0f);
     _world = new b2World(gravity);
     
+    _multiplayerGameState -> setWorld(_world);
+    
     _contactListener = new GameContactListener();
     _world->SetContactListener(_contactListener);
-    
-    // Load the level for the game
-    _loader = new LevelHelperLoader("level01.plhs");
-
-    if(!_loader->isGravityZero()){
-        _loader->createGravity(_world);
-    }
-    
-    _loader->addObjectsToWorld(_world, _gameLayer);
-    _loader->createPhysicBoundaries(_world);
-    
-    // Extracting the world size from the level loader
-    _worldSize = _loader->gameWorldSize().size;
-    _worldWidthBoundaryInScreenPoints = -(_worldSize.width - _screenSize.width);
-    _viewPointX = ccpMult(_screenSize, 0.3f).x;
-    
-    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Characters.plist");
-    _charactersBatchNode = CCSpriteBatchNode::create("Characters.png", 200);
-    _gameLayer->addChild(_charactersBatchNode, kGameLayerZOrderDefault);
-    
-    // Create the hero, place it under zero point -> it will be arranged later on.
-    _player = Hero::create(_world);
-    _player->retain();
-    
-    this->addChild(_gameLayer);
-    
-    preparePlayersForRace(locateStartLine());
-    locateFinishLine();
-    locateRandomBoxes();
-    
-    _heroFireBalls = CCArray::create();
-    _heroFireBalls->retain();
     
     // Add the atlas to the hud layer
     CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("InGame.plist");
     _hudBatchNode = CCSpriteBatchNode::create("InGame.png", 200);
     _hudLayer->addChild(_hudBatchNode);
     
+    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Characters.plist");
+    _charactersBatchNode = CCSpriteBatchNode::create("Characters.png", 200);
+    _gameLayer->addChild(_charactersBatchNode, kGameLayerZOrderDefault);
+    
+    // Create the hero
+    _player = Hero::create(_world);
+    _player->retain();
+    
+    // Ask the game level to give us a random level (all connected players will have the same level as the class use Nextpeer's random function)
+    _loader = GameLevel::getRandomLevelLoader();
+    if(!_loader->isGravityZero()){
+        _loader->createGravity(_world);
+    }
+    
+    // Register our selector to the loading progress. Once the level has finished loading we will switch to the next game step
+    _loader->registerLoadingProgressObserver(this, schedule_selector(GameLayer::levelLoadingProgress));
+    
+    _loader->addObjectsToWorld(_world, _gameLayer);
+    _loader->createPhysicBoundaries(_world);
+    
+    // Send out the avatar notification
+    _multiplayerGameState->dispatchAvatarNotification(*_player->getPlayerData());
+    
+    _multiplayerGameState->setCanLoadOpponents(true);
+    _multiplayerGameState->flushOpponentsWaitingToLoadQueue();
+    
+    // Extracting the world size from the level loader
+    _worldSize = _loader->gameWorldSize().size;
+    
+    // Set the view point on the screen
+    _worldWidthBoundaryInScreenPoints = -(_worldSize.width - _screenSize.width);
+    _viewPointX = ccpMult(_screenSize, 0.3f).x;
+}
+
+void GameLayer::levelLoadingProgress(float val) {
+    if (_loadingLayer == NULL) return;
+    
+    // When level is loaded (1.0 represents that the level is fully loaded), remove the loading layer and add the game layer
+    // Start the waiting for other players state
+    if (val == 1.0f) {
+        // Unregister the level loading
+        _loader->registerLoadingProgressObserver(NULL, NULL);
+        
+        // This will make sure that the hud will be the top most layer
+        _gameLayer->addChild(_hudLayer, kGameLayerZOrderHUD);
+        _gameLayer->setVisible(true);
+        _loadingLayer->setVisible(false);
+        removeChild(_loadingLayer);
+        CC_SAFE_RELEASE_NULL(_loadingLayer);
+        
+        this->addChild(_gameLayer);
+        _gameLayer->setVisible(true);
+        loadWaitingForOtherPlayersState();
+    }
+}
+
+void GameLayer::loadWaitingForOtherPlayersState() {
+    _state = kGameWaitForOtherPlayers;
+    
+    _waitForPlayersNode = CCSprite::createWithSpriteFrameName("hud_waiting_for_players.png");
+    _waitForPlayersNode->setPosition(ccp(_screenSize.width/2, _screenSize.height/2));
+    _waitForPlayersNode->setVisible(true);
+    
+    _waitForPlayesActivityIndicatorNode = CCSprite::createWithSpriteFrameName("hud_activity_indicator.png");
+    _waitForPlayesActivityIndicatorNode->setPosition(ccp(_screenSize.width/2, _waitForPlayersNode->getPositionY() - _waitForPlayersNode->getContentSize().height/2));
+    _waitForPlayesActivityIndicatorNode->runAction(CCRepeatForever::create(CCRotateBy::create(0.05, 10.0)));
+    
+    _hudBatchNode->addChild(_waitForPlayersNode);
+    _hudBatchNode->addChild(_waitForPlayesActivityIndicatorNode);
+    
     loadHUDElements();
     
-    _gameLayer->addChild(_hudLayer, kGameLayerZOrderHUD);
+    // Place a timeout on the loading for other players state, in case a player will chose to cancel the game.
+    this->scheduleOnce(schedule_selector(GameLayer::waitForOpponentsSpritesLoadingTimeout), MAX_WAIT_FOR_OPPONENT_SPRITES_SIGNAL_SECONDS);
+}
+
+void GameLayer::loadHUDElements() {
+    CCNode* hudX = CCSprite::createWithSpriteFrameName("hud_x.png");
+    CCMenuItemSprite* endGame = CCMenuItemSprite::create(hudX, hudX, this, menu_selector(GameLayer::menuCallbackEndGame));
+    CCMenu *leaveGameHudMenu = CCMenu::create(endGame, NULL);
+    leaveGameHudMenu->setPosition(ccp(_screenSize.width - hudX->getContentSize().width/2 - HUD_ITEMS_SPACING, _screenSize.height - hudX->getContentSize().height/2 - HUD_ITEMS_SPACING));
+    _hudLayer->addChild(leaveGameHudMenu);
     
-    _state = kGamePlay;
+    CCNode* jumpButtonNode = CCSprite::createWithSpriteFrameName("jump_button.png");
+    CCMenuItemSprite* jumpButton = CCMenuItemSprite::create(jumpButtonNode, jumpButtonNode, this, menu_selector(GameLayer::menuCallbackJump));
+    CCMenu *jumpHudMenu = CCMenu::create(jumpButton, NULL);
+    jumpHudMenu->setPosition(ccp(_screenSize.width - jumpButtonNode->getContentSize().width/2 - HUD_ITEMS_SPACING, jumpButtonNode->getContentSize().height/2 + HUD_ITEMS_SPACING));
+    _hudLayer->addChild(jumpHudMenu);
+    
+    _usePowerNode = CCSprite::createWithSpriteFrameName("use_fire_button.png");
+    CCMenuItemSprite* usePowerButton = CCMenuItemSprite::create(_usePowerNode, _usePowerNode, this, menu_selector(GameLayer::menuCallbackUsePower));
+    _usePowerHudMenu = CCMenu::create(usePowerButton, NULL);
+    _usePowerHudMenu->setPosition(ccp(_usePowerNode->getContentSize().width/2 + HUD_ITEMS_SPACING,  _usePowerNode->getContentSize().height/2 + HUD_ITEMS_SPACING));
+    _usePowerHudMenu->setVisible(false); // We will enable it once the player got a power
+    _hudLayer->addChild(_usePowerHudMenu);
+    
+    // Position the score display next to the "X" menu item
+    _scoreDisplay = CCLabelBMFont::create("0", BM_FONT_NAME, _screenSize.width * 0.4f, kCCTextAlignmentCenter);
+    _scoreDisplay->setAnchorPoint(ccp(1,1));
+    _scoreDisplay->setPosition(ccp(leaveGameHudMenu->getPositionX() - hudX->getContentSize().width/2 - HUD_ITEMS_SPACING, leaveGameHudMenu->getPositionY() + _scoreDisplay->getContentSize().height/2));
+    
+    _hudLayer->addChild(_scoreDisplay);
+}
+
+void GameLayer::loadPlayState()
+{
+    locateRandomBoxes();
+    locateStartLine();
+    preparePlayersForRace(locateFinishLine());
 }
 
 float GameLayer::locateStartLine() {
@@ -421,45 +731,28 @@ void GameLayer::locateRandomBoxes() {
     
 }
 
-void GameLayer::loadHUDElements() {
-    CCNode* hudX = CCSprite::createWithSpriteFrameName("hud_x.png");
-    CCMenuItemSprite* endGame = CCMenuItemSprite::create(hudX, hudX, this, menu_selector(GameLayer::menuCallbackEndGame));
-    CCMenu *leaveGameHudMenu = CCMenu::create(endGame, NULL);
-    leaveGameHudMenu->setPosition(ccp(_screenSize.width - hudX->getContentSize().width/2 - HUD_ITEMS_SPACING, _screenSize.height - hudX->getContentSize().height/2 - HUD_ITEMS_SPACING));
-    _hudLayer->addChild(leaveGameHudMenu);
-    
-    CCNode* jumpButtonNode = CCSprite::createWithSpriteFrameName("jump_button.png");
-    CCMenuItemSprite* jumpButton = CCMenuItemSprite::create(jumpButtonNode, jumpButtonNode, this, menu_selector(GameLayer::menuCallbackJump));
-    CCMenu *jumpHudMenu = CCMenu::create(jumpButton, NULL);
-    jumpHudMenu->setPosition(ccp(_screenSize.width - jumpButtonNode->getContentSize().width/2 - HUD_ITEMS_SPACING, jumpButtonNode->getContentSize().height/2 + HUD_ITEMS_SPACING));
-    _hudLayer->addChild(jumpHudMenu);
-    
-    _usePowerNode = CCSprite::createWithSpriteFrameName("use_fire_button.png");
-    CCMenuItemSprite* usePowerButton = CCMenuItemSprite::create(_usePowerNode, _usePowerNode, this, menu_selector(GameLayer::menuCallbackUsePower));
-    _usePowerHudMenu = CCMenu::create(usePowerButton, NULL);
-    _usePowerHudMenu->setPosition(ccp(_usePowerNode->getContentSize().width/2 + HUD_ITEMS_SPACING,  _usePowerNode->getContentSize().height/2 + HUD_ITEMS_SPACING));
-    _usePowerHudMenu->setVisible(false); // We will enable it once the player got a power
-    _hudLayer->addChild(_usePowerHudMenu);
-    
-    // Position the score display next to the "X" menu item
-    _scoreDisplay = CCLabelBMFont::create("0", BM_FONT_NAME, _screenSize.width * 0.4f, kCCTextAlignmentCenter);
-    _scoreDisplay->setAnchorPoint(ccp(1,1));
-    _scoreDisplay->setPosition(ccp(leaveGameHudMenu->getPositionX() - hudX->getContentSize().width/2 - HUD_ITEMS_SPACING, leaveGameHudMenu->getPositionY() + _scoreDisplay->getContentSize().height/2));
-    
-    _hudLayer->addChild(_scoreDisplay);
-}
-
 void GameLayer::preparePlayersForRace(float startLineScreenXPosition)
 {
-    CCArray* players = CCArray::createWithObject(_player);
+    CCArray* players = NULL;
+    
+    // Create an array of the opponents + the current player
+    CCArray* opponents = _multiplayerGameState->getAllOpponents();
+    if (opponents == NULL) {
+        players = CCArray::createWithObject(_player);
+    }
+    else {
+        players = CCArray::createWithCapacity(opponents->count() + 1);
+        players->initWithArray(opponents);
+        players->addObject(_player);
+    }
     
     float terrainHeight = 0;
     
     // Looking for the top brick, getting its screen top Y position so we'll place the players at the right level.
-    CCArray * sprites = _loader->spritesWithTag(GAME_LEVEL_START_BLOCK);
+    CCArray* sprites = _loader->spritesWithTag(GAME_LEVEL_START_BLOCK);
     if (sprites -> count() > 0) {
         CCNode* sprite = (CCNode*)sprites->objectAtIndex(0);
-        terrainHeight = sprite->getPositionY() + sprite->getContentSize().height;
+        terrainHeight = sprite->getPositionY() + sprite->getContentSize().height/2;
     }
     // Error, report to console, use the screen height as a marker
     else {
@@ -467,7 +760,21 @@ void GameLayer::preparePlayersForRace(float startLineScreenXPosition)
         terrainHeight = _screenSize.height/2.0f;
     }
     
+    
     unsigned int playerCount = players->count();
+    
+    // Make sure the array is sorted by id, this way we ensure all devices use the same start arrangement
+    CCSortableArray* sortedPlayers = CCSortableArray::createWithArray(players);
+    sortedPlayers->sort(GameLayer::playerIdComparator);
+    
+    for (unsigned int i = 0; i < playerCount; i++) {
+        unsigned int rand1 = Rand::generate(0, playerCount);
+        unsigned int rand2 = Rand::generate(0, playerCount);
+        
+        if (rand1 != rand2) {
+            sortedPlayers->exchangeObjectAtIndex(rand1, rand2);
+        }
+    }
     
     // Now that our array has been shuffled, we'll generate world positions for all the players
     ViewPort *viewPort = ViewPort::getInstance();
@@ -481,12 +788,12 @@ void GameLayer::preparePlayersForRace(float startLineScreenXPosition)
     
     // The slot will be the smallest between the last player content size or the slot.
     // We use the last player as it is arranged the same for all of the players.
-    Player* lastPlayer = static_cast<Player*>((players)->lastObject());
+    Player* lastPlayer = static_cast<Player*>((sortedPlayers)->lastObject());
     playerSpaceScreenSlot = min(playerSpaceScreenSlot, lastPlayer->getContentSize().width);
     
     CCObject* currentElem = NULL;
     int playerCounter = 0;
-    CCARRAY_FOREACH(players, currentElem)
+    CCARRAY_FOREACH(sortedPlayers, currentElem)
     {
         Player* player = static_cast<Player*>(currentElem);
         
@@ -496,10 +803,10 @@ void GameLayer::preparePlayersForRace(float startLineScreenXPosition)
         // In the middle of each slot (regardless of the player size, that will better fit smaller devices with a lot of players).
         // Each player will be arranged in the next slot (so the player will not be near world edge.
         CCPoint screenPos = ccp((1+ playerCounter)*playerSpaceScreenSlot + playerSpaceScreenSlot/2, groundPosScreenPositionY);
-     
+        
         // Setting the opponent's world position so when there will be a position pre-network update
         if (player != _player)  {
-            // TODO: Set world position for opponent
+            static_cast<Opponent*>(player)->setPosition(screenPos);
         }
         else {
             // Set player's first position
@@ -526,7 +833,7 @@ void GameLayer::updateScoreLabel()
 }
 
 void GameLayer::showBonusLabel(int bonus) {
-
+    
     char szValue[100] = {0};
     sprintf(szValue, "%i", bonus);
     CCLabelBMFont *bonusSize = CCLabelBMFont::create(szValue, BM_FONT_NAME, _screenSize.width * 0.4f, kCCTextAlignmentCenter);
@@ -616,9 +923,7 @@ void GameLayer::callbackDoneEndRaceAnimation()
 
 void GameLayer::menuCallbackEndGame(CCObject* sender) {
     
-    if (CCNextpeer::getInstance()->isCurrentlyInTournament()) {
-        CCNextpeer::getInstance()->reportForfeitForCurrentTournament();
-    }
+    CCNextpeer::getInstance()->reportForfeitForCurrentTournament();
     
     // Switch back to the main menu
     CCDirector::sharedDirector()->replaceScene(MainMenuLayer::scene());
@@ -637,9 +942,52 @@ void GameLayer::menuCallbackJump(CCObject* sender) {
     }
 }
 
+bool GameLayer::playerIdComparator(CCObject *player1, CCObject *player2)
+{
+    Player* pPlayer1 = static_cast<Player*>(player1);
+    Player* pPlayer2 = static_cast<Player*>(player2);
+    
+    int result = pPlayer1->getPlayerData()->getPlayerId().compare(pPlayer2->getPlayerData()->getPlayerId());
+    
+    return result < 0;
+}
+
 bool GameLayer::powerUpBoxScreenPositionNodeComparator(CCObject *box1, CCObject *box2) {
     CCNode* pBox1 = static_cast<CCNode*>(box1);
     CCNode* pBox2 = static_cast<CCNode*>(box2);
     return (pBox1 -> getPositionX() < pBox2 -> getPositionX());
 }
 
+void GameLayer::multiplayerGameStateReady(CCObject *pSender)
+{
+    // Remove the wait for opponents sprite loading timeout selector (as those already loaded)
+    this->unschedule(schedule_selector(GameLayer::waitForOpponentsSpritesLoadingTimeout));
+    
+    // Register to a synchronized event for this game
+    CCNextpeer::getInstance()->registerToSynchronizedEvent(kStartGameSyncEventName, kStartGameSyncEventTimeout);
+}
+
+void GameLayer::readyToStartGameCallback(CCObject *pSender)
+{
+    if (_state == kGameWaitForOtherPlayers) {
+        _state = kGameStartCountDown;
+        
+        // Reset the game clock (the countdown is about to start on all connected devices)
+        GameClock::getInstance()->reset();
+        
+        _waitForPlayersNode->setVisible(false);
+        _waitForPlayesActivityIndicatorNode->setVisible(false);
+        _hudLayer->removeChild(_waitForPlayersNode);
+        _hudLayer->removeChild(_waitForPlayesActivityIndicatorNode);
+        
+        this->loadPlayState();
+        
+        _startGameCounter = PRE_GAME_COUNT_DOWN_SECONDS;
+        this->schedule(schedule_selector(GameLayer::startGameCountDown), 1.0f);
+    }
+}
+
+void GameLayer::waitForOpponentsSpritesLoadingTimeout(float dt)
+{
+    _multiplayerGameState->waitForOpponentsSpritesTimedOut();
+}

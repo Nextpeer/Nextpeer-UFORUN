@@ -8,6 +8,7 @@
 
 #include "Hero.h"
 #include "ViewPort.h"
+#include "CCNextpeer.h"
 
 #define PLAYER_JUMP_Y_SPEED_WHEN_STUCK 8.0f
 #define PLAYER_JUMP_Y_SPEED_WHILE_RUN 6.0f
@@ -16,7 +17,7 @@
 #define SPEED_BOOST_POWER_UP_TIMEOUT 3.5f
 #define SPEED_BOOST_POWER_UP_INCREASE 2.0f
 
-Hero::Hero(GamePlayerProfile *profile, b2World* world) : Player(profile, world)
+Hero::Hero(GamePlayerProfile *profile, b2World* world, PlayerData *data) : Player(profile, world, data)
 {
     // Record the position;
     _speedX = PLAYER_DEFAULT_LINEAR_SPEED_X;
@@ -33,9 +34,15 @@ Hero::Hero(GamePlayerProfile *profile, b2World* world) : Player(profile, world)
 
 Hero* Hero::create(b2World* world)
 {
-    GamePlayerProfile *profile = GamePlayerProfileFactory::createProfileByTypeOrNull(CurrentPlayerGameProfile::getCurrentUserProfile());
+    // Create the Hero player data
+    string playerName = nextpeer::CCNextpeer::getInstance()->getCurrentPlayerName();
+    string playerId = nextpeer::CCNextpeer::getInstance()->getCurrentPlayerId();
     
-    Hero *hero = new Hero(profile, world);
+    PlayerData *heroData = PlayerData::create(playerId, playerName, false);
+    heroData->setProfileType(CurrentPlayerGameProfile::getCurrentUserProfile());
+    GamePlayerProfile *profile = GamePlayerProfileFactory::createProfileByTypeOrNull(heroData->getProfileType());
+    
+    Hero *hero = new Hero(profile, world, heroData);
     
 	if (hero != NULL) {
 		hero->autorelease();

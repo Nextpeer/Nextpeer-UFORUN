@@ -12,11 +12,15 @@
 #include "cocos2d.h"
 USING_NS_CC;
 
+class MultiplayerGameState;
+
 /**
  This class listen to the different events of the Nextpeer platform.
  */
-class NextpeerDelegate : public CCObject
-{
+class NextpeerDelegate : public CCObject {
+private:
+    MultiplayerGameState* _currentGameState;
+    
 public:
     void registerForEvents();
     void unhookEvents();

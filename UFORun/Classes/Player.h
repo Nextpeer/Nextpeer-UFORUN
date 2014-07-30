@@ -13,6 +13,7 @@
 #include "cocos-ext.h"
 #include "Box2D.h"
 #include "PlayerSpriteProfile.h"
+#include "PlayerData.h"
 
 USING_NS_CC;
 USING_NS_CC_EXT;
@@ -40,6 +41,7 @@ typedef enum
 class Player : public CCPhysicsSprite {
     
 private:
+    PlayerData *_playerData;    // The player's multiplayer data (name, player id)
     GamePlayerProfile *_profile;   // The player's game profile (avatar, asset details)
     CCAction * _runAction; // The player run animation (animation frames)
     CCAction * _hurtAction; // The player hurt (explosion) animation (animation frames)
@@ -64,10 +66,14 @@ protected:
     void stopPlayerEffectAnimation();
 public:
 	
-	Player(GamePlayerProfile *profile, b2World* world);
+	Player(GamePlayerProfile *profile, b2World* world, PlayerData *data);
 	~Player();
     
 	virtual void update (float dt) = 0;
+    
+    PlayerData* getPlayerData() const{
+    	return _playerData;
+	}
     
     GamePlayerProfile* getPlayerProfile() const{
     	return _profile;

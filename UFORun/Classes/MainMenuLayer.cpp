@@ -9,7 +9,9 @@
 #include "MainMenuLayer.h"
 #include "PlayerSpriteProfile.h"
 #include "GameLayer.h"
+#include "CCNextpeer.h"
 
+using namespace nextpeer;
 #define HUD_ITEMS_SPACING 10.0f
 
 CCScene* MainMenuLayer::scene()
@@ -143,7 +145,7 @@ void MainMenuLayer::createScreen () {
 
 void MainMenuLayer::menuCallbackStartGame(CCObject* pSender) {
     
-    CCDirector::sharedDirector()->replaceScene(GameLayer::scene());
+    CCNextpeer::getInstance()->launchDashboard();
 }
 
 void MainMenuLayer::menuCallbackChangeAvatarToRight(CCObject* pSender) {

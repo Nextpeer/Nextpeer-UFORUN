@@ -28,10 +28,13 @@ import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
 
 import android.os.Bundle;
 
+import com.nextpeer.android.NextpeerCocos2DX;
+
 public class UFORun extends Cocos2dxActivity{
 	
     protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);	
+        NextpeerCocos2DX.onCreate(this);
 	}
 
     public Cocos2dxGLSurfaceView onCreateView() {
@@ -40,6 +43,20 @@ public class UFORun extends Cocos2dxActivity{
     	glSurfaceView.setEGLConfigChooser(5, 6, 5, 0, 16, 8);
     	
     	return glSurfaceView;
+    }
+
+    protected void onStart()
+    {
+        super.onStart();
+        NextpeerCocos2DX.onStart();
+    }
+
+    protected void onStop()
+    {
+        super.onStop();
+
+        // If any ongoing tournament is going on, this line will cause Nextpeer to forfeit it  
+        NextpeerCocos2DX.onStop();
     }
 
     static {

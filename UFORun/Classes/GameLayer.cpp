@@ -15,6 +15,9 @@
 #include "CCSortableArray.h"
 #include "MainMenuLayer.h"
 #include "HeroFireBall.h"
+#include "CCNextpeer.h"
+
+using namespace nextpeer;
 
 #define HUD_ITEMS_SPACING 10.0f
 
@@ -84,6 +87,7 @@ bool GameLayer::init()
         _heroLastCalculatedForScoreWorldXPosition = 0;
         _score = 0;
         _timeSpentRunningInSeconds = 0;
+        _timeSinceLastScoreReport = 0;
         
         _player = NULL;
         _gameLayer = NULL;
@@ -277,6 +281,13 @@ void GameLayer::update(float dt)
             }
             heroFireBallsIndex--;
         }
+    }
+    
+    // Send a score update every 1 second
+    _timeSinceLastScoreReport += dt;
+    if (_timeSinceLastScoreReport > 1.0f) {
+        CCNextpeer::getInstance()->reportScoreForCurrentTournament((unsigned int)_score);
+        _timeSinceLastScoreReport = 0.0f;
     }
 }
 
@@ -600,10 +611,14 @@ void GameLayer::menuCallbackUsePower(CCObject* sender) {
 
 void GameLayer::callbackDoneEndRaceAnimation()
 {
-    menuCallbackEndGame(this);
+    CCNextpeer::getInstance()->reportControlledTournamentOverWithScore((int)_score);
 }
 
 void GameLayer::menuCallbackEndGame(CCObject* sender) {
+    
+    if (CCNextpeer::getInstance()->isCurrentlyInTournament()) {
+        CCNextpeer::getInstance()->reportForfeitForCurrentTournament();
+    }
     
     // Switch back to the main menu
     CCDirector::sharedDirector()->replaceScene(MainMenuLayer::scene());

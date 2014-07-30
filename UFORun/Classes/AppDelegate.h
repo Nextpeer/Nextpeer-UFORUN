@@ -10,6 +10,7 @@
 #define  _APP_DELEGATE_H_
 
 #include "cocos2d.h"
+#include "NextpeerDelegate.h"
 
 USING_NS_CC;
 
@@ -21,7 +22,9 @@ USING_NS_CC;
 class  AppDelegate : private cocos2d::CCApplication
 {
 private:
+    NextpeerDelegate _nextpeerDelegate;
     void initializeViewPort(CCSize viewSize, float scaleFactor);
+    void initializeNextpeer();
     
 public:
     AppDelegate();

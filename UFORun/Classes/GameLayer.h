@@ -43,6 +43,7 @@ class GameLayer : public CCLayer
     float _viewPointX; // The view x position on the current world
     float _score; // The hero's current score
     float _timeSpentRunningInSeconds; // The seconds that the player spent actually running (not stuck, from the start line to the finish line)
+    float _timeSinceLastScoreReport; // During the game, the score increased in high frequency (every frame). We don't want clog the channel with score reports. Therefore we will send a score report every second. This counter will help us to measure the time spent since the last score report
     float _heroLastKnownScreenXPosition; // The last known screen x position of the player (between updates) -> used to move the screen
     float _heroLastCalculatedForScoreWorldXPosition; // The scene calculates the score as a function of the hero movement in the world. Keeping track on the last used world x position which been used to the calculation (for example .
     

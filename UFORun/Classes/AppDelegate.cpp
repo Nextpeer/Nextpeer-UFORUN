@@ -10,6 +10,9 @@
 #include "ViewPort.h"
 #include "MainMenuLayer.h"
 
+#include "CCNextpeer.h"
+using namespace nextpeer;
+
 typedef struct tagResource
 {
     cocos2d::CCSize size;
@@ -72,6 +75,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // set FPS. the default value is 1.0/60 if you don't call this
     pDirector->setAnimationInterval(1.0 / 60);
     
+    // Initialize Nextpeer
+    this->initializeNextpeer();
+    
     // run
     pDirector->runWithScene(MainMenuLayer::scene());
     
@@ -102,4 +108,26 @@ void AppDelegate::initializeViewPort(CCSize viewSize, float scaleFactor)
     
     ViewPort* viewPort = ViewPort::getInstance();
     viewPort->initialize(viewSize);
+}
+
+void AppDelegate::initializeNextpeer()
+{
+    // 1) Change the project's bundle identifier from "com.nextpeer.uforun" to your own domain (for example "com.mycompany.uforun") in the project's info.plist & AndroidManifest.xml.
+    // 2) Navigate to https://developers.nextpeer.com and create your iOS and an Android game.
+    // 3) In the dashboard, add a Game Pool and connect both games you've created in step #2. That's how the users from each platform will be able to play with each other.
+    // 4) Paste the iOS game key and the Android game key from our dashboard below.
+    
+    #error MAKE SURE TO DO THE STEPS ABOVE AND THEN REMOVE THIS LINE.
+    
+    // Use the proper Nextpeer's game key according to the current platform.
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    const char* gameKey = ""; // TODO: Place your iOS game key which you got from the dashboard
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    const char* gameKey = ""; // TODO: Place your Android game key which you got from the dashboard
+#endif
+    
+    CCNextpeer::getInstance()->initialize(gameKey);
+    
+    // Register for Nextpeer's events
+    _nextpeerDelegate.registerForEvents();
 }

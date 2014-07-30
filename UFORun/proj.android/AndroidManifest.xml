@@ -7,6 +7,15 @@
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19"/>
     <uses-feature android:glEsVersion="0x00020000" />
 
+    <!-- Required. Used to access the Internet to make network requests.  -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    
+    <!-- Optional - Used to check if an internet connection is available prior to make network requests -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
+    <!-- Optional - Used for Nextpeer Push Notification service, async-match invites -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />  
+    
     <supports-screens android:largeScreens="true"
                       android:smallScreens="true"
                       android:anyDensity="true"
@@ -27,5 +36,18 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.nextpeer.android.NextpeerActivity" android:screenOrientation="landscape"/>
+        
+        <activity android:name="com.nextpeer.android.facebook.LoginActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:label="@string/np__application_name" android:screenOrientation="landscape"/>
+        
+        <service android:name="com.nextpeer.android.NextpeerPushService" />
+        <receiver android:name="com.nextpeer.android.NextpeerBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest> 

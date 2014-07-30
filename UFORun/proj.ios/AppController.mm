@@ -3,6 +3,7 @@
 #import "cocos2d.h"
 #import "AppDelegate.h"
 #import "RootViewController.h"
+#import "Nextpeer/Nextpeer.h"
 
 @implementation AppController
 
@@ -12,10 +13,10 @@
 // cocos2d application instance
 static AppDelegate s_sharedApplication;
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     // Override point for customization after application launch.
-
+    
     // Add the view controller's view to the window and display.
     window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
     
@@ -27,12 +28,12 @@ static AppDelegate s_sharedApplication;
                                       sharegroup: nil
                                    multiSampling: NO
                                  numberOfSamples: 0];
-
-    // Use RootViewController manage EAGLView 
+    
+    // Use RootViewController manage EAGLView
     viewController = [[RootViewController alloc] initWithNibName:nil bundle:nil];
     viewController.wantsFullScreenLayout = YES;
     viewController.view = __glView;
-
+    
     // Set RootViewController to window
     if ( [[UIDevice currentDevice].systemVersion floatValue] < 6.0)
     {
@@ -50,7 +51,13 @@ static AppDelegate s_sharedApplication;
     [[UIApplication sharedApplication] setStatusBarHidden:true];
     
     cocos2d::CCApplication::sharedApplication()->run();
-
+    
+    // Request a device token for push invites (for Nextpeer)
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound];
+    
+    // Handle any notifications that launched this game
+    [Nextpeer handleLaunchOptions:launchOptions];
+    
     return YES;
 }
 
@@ -72,7 +79,7 @@ static AppDelegate s_sharedApplication;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     /*
-     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
      If your application supports background execution, called instead of applicationWillTerminate: when the user quits.
      */
     cocos2d::CCApplication::sharedApplication()->applicationDidEnterBackground();
@@ -92,6 +99,33 @@ static AppDelegate s_sharedApplication;
      */
 }
 
+-(void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    // Pass device token to Nextpeer
+    [Nextpeer registerDeviceToken:deviceToken];
+}
+
+// Handles any remote notifications that were received
+// when the game is running (even while backgrounded)
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    [Nextpeer handleRemoteNotification:userInfo];
+}
+
+// Takes care of local notifications received
+// when the game is running (even while backgrounded)
+-(void)application:(UIApplication*)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    [Nextpeer handleLocalNotification:notification];
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [Nextpeer handleOpenURL:url];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation  {
+    return [Nextpeer handleOpenURL:url];
+}
 
 #pragma mark -
 #pragma mark Memory management

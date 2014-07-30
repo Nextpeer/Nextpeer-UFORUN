@@ -1,0 +1,3 @@
+[submodule "UFORun/Classes/Nextpeer"]
+	path = UFORun/Classes/Nextpeer
+	url = git@github.com:Nextpeer/Nextpeer-Cocos2dx.git

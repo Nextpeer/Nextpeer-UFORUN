@@ -118,7 +118,7 @@ void AppDelegate::initializeNextpeer()
     // 4) Paste the iOS game key and the Android game key from our dashboard below.
 
     
-    #error MAKE SURE TO DO THE STEPS ABOVE AND THEN REMOVE THIS LINE.
+//    #error MAKE SURE TO DO THE STEPS ABOVE AND THEN REMOVE THIS LINE.
     // ** Pay attention - You will need to play a few sessions until Nextpeer recording feature will kick in ** /
     
     // Use the proper Nextpeer's game key according to the current platform.

@@ -10,33 +10,33 @@
 	<string>UFORun</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>79A4E769-2E4D-46D9-90B5-F042358D7BD5</key>
+		<key>1D27A8A24D6A1FF7370CA8A174B694608DB1114A</key>
+		<string>github.com:Nextpeer/Nextpeer-Cocos2dx.git</string>
+		<key>1E0986289EDF5F6131A5D3FF6CFAB6B0EEB4802E</key>
 		<string>https://github.com/shaimagz/Nextpeer-UFORUN.git</string>
-		<key>C702164F-55AC-4FC6-9947-BA316F521FA0</key>
-		<string>https://github.com/Nextpeer/Nextpeer-Cocos2dx.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>UFORun/proj.ios/UFORun.xcodeproj/project.xcworkspace</string>
+	<string>UFORun/proj.ios/UFORun.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>79A4E769-2E4D-46D9-90B5-F042358D7BD5</key>
+		<key>1D27A8A24D6A1FF7370CA8A174B694608DB1114A</key>
+		<string>../../../..UFORun/Classes/Nextpeer/</string>
+		<key>1E0986289EDF5F6131A5D3FF6CFAB6B0EEB4802E</key>
 		<string>../../../..</string>
-		<key>C702164F-55AC-4FC6-9947-BA316F521FA0</key>
-		<string>../../../Classes/Nextpeer</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/shaimagz/Nextpeer-UFORUN.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>79A4E769-2E4D-46D9-90B5-F042358D7BD5</string>
+	<string>1E0986289EDF5F6131A5D3FF6CFAB6B0EEB4802E</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>C702164F-55AC-4FC6-9947-BA316F521FA0</string>
+			<string>1D27A8A24D6A1FF7370CA8A174B694608DB1114A</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Nextpeer</string>
 		</dict>
@@ -44,7 +44,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>79A4E769-2E4D-46D9-90B5-F042358D7BD5</string>
+			<string>1E0986289EDF5F6131A5D3FF6CFAB6B0EEB4802E</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Nextpeer-UFORUN</string>
 		</dict>

@@ -118,14 +118,14 @@ void AppDelegate::initializeNextpeer()
     // 4) Paste the iOS game key and the Android game key from our dashboard below.
 
     
-//    #error MAKE SURE TO DO THE STEPS ABOVE AND THEN REMOVE THIS LINE.
+    #error MAKE SURE TO DO THE STEPS ABOVE AND THEN REMOVE THIS LINE.
     // ** Pay attention - You will need to play a few sessions until Nextpeer recording feature will kick in ** /
     
     // Use the proper Nextpeer's game key according to the current platform.
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    const char* gameKey = ""; // TODO: Place your iOS game key which you got from the dashboard
+    const char* gameKey = "?"; // TODO: Place your iOS game key which you got from the dashboard
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    const char* gameKey = ""; // TODO: Place your Android game key which you got from the dashboard
+    const char* gameKey = "?"; // TODO: Place your Android game key which you got from the dashboard
 #endif
     
     CCNextpeer::getInstance()->initialize(gameKey);

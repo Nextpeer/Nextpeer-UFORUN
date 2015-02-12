@@ -2,52 +2,57 @@
 #ifndef __COMPATIBLECLASSES_H__
 #define __COMPATIBLECLASSES_H__
 
-#include "../UILabel.h"
-#include "../../Layouts/Layout.h"
+#include "cocos2d.h"
+#include "../../BaseClasses/UIWidget.h"
 #include "../UIButton.h"
-
-NS_CC_EXT_BEGIN
+#include "../UICheckBox.h"
+#include "../UIImageView.h"
+#include "../UILabel.h"
+#include "../UILabelAtlas.h"
+#include "../UILabelBMFont.h"
+#include "../UILoadingBar.h"
+#include "../UISlider.h"
+#include "../UITextField.h"
+#include "../../Layouts/UILayout.h"
+#include "../ScrollWidget/UIListView.h"
+#include "../ScrollWidget/UIPageView.h"
+#include "../ScrollWidget/UIScrollView.h"
 
 //class type define
-typedef Layout UIPanel;
-typedef UILabel UITextArea;
-typedef Layout UIContainerWidget;
-typedef UIButton UITextButton;
-typedef UIWidget UINodeContainer;
-/**
-*   @js NA
-*   @lua NA
-*/
-class UIZoomButton : public UITextButton
-{
-public:
-    static UIZoomButton* create()
-    {
-        UIZoomButton* widget = new UIZoomButton();
-        if (widget && widget->init())
-        {
-            widget->autorelease();
-            return widget;
-        }
-        CC_SAFE_DELETE(widget);
-        return NULL;
-    };
-protected:
-    virtual bool init()
-    {
-        if (UITextButton::init())
-        {
-            setScale9Enabled(true);
-            setPressedActionEnabled(true);
-            return true;
-        }
-        return false;
-    };
-};
+NS_CC_BEGIN
+//
+namespace ui {
+  
+typedef cocos2d::ui::Layout UIPanel;
+typedef cocos2d::ui::Layout UILayout;
+typedef cocos2d::ui::Widget UIWidget;
 
-//enmu type define
-typedef LayoutBackGroundColorType PanelColorType;
+typedef cocos2d::ui::LayoutParameter UILayoutParameter;
+typedef cocos2d::ui::Margin UIMargin;
 
-NS_CC_EXT_END
+typedef cocos2d::ui::ListView UIListView;
+typedef cocos2d::ui::PageView UIPageView;
+typedef cocos2d::ui::ScrollView UIDragPanel;
+typedef cocos2d::ui::ScrollView UIScrollView;
+typedef cocos2d::ui::Button UIButton;
+typedef cocos2d::ui::Button UITextButton;
+typedef cocos2d::ui::CheckBox UICheckBox;
+typedef cocos2d::ui::ImageView UIImageView;
+typedef cocos2d::ui::Label UILabel;
+typedef cocos2d::ui::LabelAtlas UILabelAtlas;
+typedef cocos2d::ui::LabelBMFont UILabelBMFont;
+typedef cocos2d::ui::LoadingBar UILoadingBar;
+typedef cocos2d::ui::Slider UISlider;
+typedef cocos2d::ui::TextField UITextField;
+typedef cocos2d::ui::TouchGroup UILayer;
+
+typedef cocos2d::ui::LinearGravity UILinearGravity;
+typedef cocos2d::ui::RelativeAlign UIRelativeAlign;
+typedef cocos2d::ui::LayoutParameter UILayoutParameter;
+typedef cocos2d::ui::LinearLayoutParameter UILinearLayoutParameter;
+typedef cocos2d::ui::RelativeLayoutParameter UIRelativeLayoutParameter;
+}
+NS_CC_END
+
 
 #endif /* defined(__CompatibleClasses__) */

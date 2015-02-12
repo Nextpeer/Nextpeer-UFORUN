@@ -39,7 +39,6 @@ var Ship = cc.Sprite.extend({
         this.born();
     },
     update:function (dt) {
-
         // Keys are only enabled on the browser
         if (sys.platform == 'browser') {
             var pos = this.getPosition();
@@ -88,7 +87,7 @@ var Ship = cc.Sprite.extend({
         explosion.setPosition(this.getPosition());
 
         if (MW.SOUND) {
-            cc.AudioEngine.getInstance().playEffect(s_shipDestroyEffect_mp3);
+            cc.AudioEngine.getInstance().playEffect(res.shipDestroyEffect_mp3);
         }
     },
     hurt:function () {

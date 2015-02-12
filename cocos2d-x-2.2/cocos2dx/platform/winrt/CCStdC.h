@@ -61,17 +61,26 @@ THE SOFTWARE.
     #include "./compat/stdint.h"
 #endif
 
+//typedef SSIZE_T ssize_t;
+// ssize_t was redefined as int in libwebsockets.h.
+// Therefore, to avoid conflict, we needs the same definition.
+typedef int ssize_t;
+
 #define _WINSOCKAPI_
 // Structure timeval has define in winsock.h, include windows.h for it.
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WP8
+#include <WinSock2.h>
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
 #include <Windows.h>
 //#include <WinSock2.h>
 
 #undef timeval
 struct timeval
 {
- 	long tv_sec;		// seconds
- 	long tv_usec;    // microSeconds
+	long tv_sec;		// seconds
+	long tv_usec;    // microSeconds
 };
+#endif // CC_TARGET_PLATFORM == CC_PLATFORM_WP8
 
 struct timezone
 {

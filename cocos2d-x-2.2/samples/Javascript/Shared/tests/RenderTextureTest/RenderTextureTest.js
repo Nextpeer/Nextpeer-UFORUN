@@ -91,7 +91,7 @@ var RenderTextureSave = RenderTextureBaseLayer.extend({
         this._brush = cc.Sprite.create(s_fire);
         this._brush.retain();
 
-        this._brush.setColor(cc.RED);
+        this._brush.setColor(cc.red());
         this._brush.setOpacity(20);
 
         var save = cc.MenuItemFont.create("Save", this.saveCB, this);
@@ -138,19 +138,21 @@ var RenderTextureSave = RenderTextureBaseLayer.extend({
 
     drawInLocation:function (location) {
         var distance = cc.pDistance(location, this._lastLocation);
+
         if (distance > 1) {
+            var locBrush = this._brush, locLastLocation = this._lastLocation;
             this._target.begin();
             for (var i = 0; i < distance; i++) {
-                var diffX = this._lastLocation.x - location.x;
-                var diffY = this._lastLocation.y - location.y;
+                var diffX = locLastLocation.x - location.x;
+                var diffY = locLastLocation.y - location.y;
 
                 var delta = i / distance;
 
-                this._brush.setPosition(location.x + diffX * delta, location.y + diffY * delta);
-                this._brush.setRotation(Math.random() * 360);
-                this._brush.setScale(Math.random() * 2);
-                this._brush.setColor(cc.c3b(Math.random() * 255, 255, 255));
-                this._brush.visit();
+                locBrush.setPosition(location.x + diffX * delta, location.y + diffY * delta);
+                locBrush.setRotation(Math.random() * 360);
+                locBrush.setScale(Math.random() * 2);
+                locBrush.setColor(cc.c3b(Math.random() * 255, 255, 255));
+                locBrush.visit();
             }
             this._target.end();
         }
@@ -202,10 +204,10 @@ var RenderTextureIssue937 = RenderTextureBaseLayer.extend({
         this.addChild(background);
 
         var spr_premulti = cc.Sprite.create(s_fire);
-        spr_premulti.setPosition(cc.p(16, 48));
+        spr_premulti.setPosition(16, 48);
 
         var spr_nonpremulti = cc.Sprite.create(s_fire);
-        spr_nonpremulti.setPosition(cc.p(16, 16));
+        spr_nonpremulti.setPosition(16, 16);
 
         /* A2 & B2 setup */
         var rend = cc.RenderTexture.create(32, 64, cc.TEXTURE_2D_PIXEL_FORMAT_RGBA8888);
@@ -220,11 +222,11 @@ var RenderTextureIssue937 = RenderTextureBaseLayer.extend({
         rend.end();
 
         /* A1: setup */
-        spr_premulti.setPosition(cc.p(winSize.width / 2 - 16, winSize.height / 2 + 16));
+        spr_premulti.setPosition(winSize.width / 2 - 16, winSize.height / 2 + 16);
         /* B1: setup */
-        spr_nonpremulti.setPosition(cc.p(winSize.width / 2 - 16, winSize.height / 2 - 16));
+        spr_nonpremulti.setPosition(winSize.width / 2 - 16, winSize.height / 2 - 16);
 
-        rend.setPosition(cc.p(winSize.width / 2 + 16, winSize.height / 2));
+        rend.setPosition(winSize.width / 2 + 16, winSize.height / 2);
         //background.setVisible(false);
         this.addChild(spr_nonpremulti);
         this.addChild(spr_premulti);
@@ -236,7 +238,7 @@ var RenderTextureIssue937 = RenderTextureBaseLayer.extend({
     },
 
     subtitle:function () {
-        return "All images should be equal...";
+        return "All images should be equal..";
     }
 });
 
@@ -257,15 +259,15 @@ var RenderTextureZbuffer = RenderTextureBaseLayer.extend({
         this.setTouchEnabled(true);
         var size = cc.Director.getInstance().getWinSize();
         var label = cc.LabelTTF.create("vertexZ = 50", "Marker Felt", 64);
-        label.setPosition(cc.p(size.width / 2, size.height * 0.25));
+        label.setPosition(size.width / 2, size.height * 0.25);
         this.addChild(label);
 
         var label2 = cc.LabelTTF.create("vertexZ = 0", "Marker Felt", 64);
-        label2.setPosition(cc.p(size.width / 2, size.height * 0.5));
+        label2.setPosition(size.width / 2, size.height * 0.5);
         this.addChild(label2);
 
         var label3 = cc.LabelTTF.create("vertexZ = -50", "Marker Felt", 64);
-        label3.setPosition(cc.p(size.width / 2, size.height * 0.75));
+        label3.setPosition(size.width / 2, size.height * 0.75);
         this.addChild(label3);
 
         label.setVertexZ(50);
@@ -306,7 +308,7 @@ var RenderTextureZbuffer = RenderTextureBaseLayer.extend({
         this.sp9.setVertexZ(-400);
 
         this.sp9.setScale(2);
-        this.sp9.setColor(cc.YELLOW);
+        this.sp9.setColor(cc.yellow());
     },
 
     onTouchesBegan:function (touches, event) {
@@ -365,18 +367,18 @@ var RenderTextureZbuffer = RenderTextureBaseLayer.extend({
         if (!texture)
             return;
 
-        texture.setAnchorPoint(cc.p(0, 0));
+        texture.setAnchorPoint(0, 0);
         texture.begin();
         this.visit();
         texture.end();
 
         var sprite = cc.Sprite.createWithTexture(texture.getSprite().getTexture());
 
-        sprite.setPosition(cc.p(winSize.width/2, winSize.width/2));
+        sprite.setPosition(winSize.width/2, winSize.width/2);
         sprite.setOpacity(182);
         sprite.setFlippedY(1);
         this.addChild(sprite, 999999);
-        sprite.setColor(cc.GREEN);
+        sprite.setColor(cc.green());
 
         sprite.runAction(cc.Sequence.create(cc.FadeTo.create(2, 0), cc.Hide.create()));
     }
@@ -390,7 +392,7 @@ var RenderTextureTestDepthStencil = RenderTextureBaseLayer.extend({
         var winSize = cc.Director.getInstance().getWinSize();
 
         var sprite = cc.Sprite.create(s_fire);
-        sprite.setPosition(cc.p(winSize.width * 0.25, 0));
+        sprite.setPosition(winSize.width * 0.25, 0);
         sprite.setScale(10);
         //TODO GL_DEPTH24_STENCIL8
         //var rend = cc.RenderTexture.create(winSize.width, winSize.height, cc.TEXTURE_2D_PIXEL_FORMAT_RGBA4444);
@@ -416,7 +418,7 @@ var RenderTextureTestDepthStencil = RenderTextureBaseLayer.extend({
 
         gl.disable(gl.STENCIL_TEST);
 
-        rend.setPosition(cc.p(winSize.width * 0.5, winSize.height * 0.5));
+        rend.setPosition(winSize.width * 0.5, winSize.height * 0.5);
 
         this.addChild(rend);
     },
@@ -460,13 +462,13 @@ var RenderTextureTargetNode = RenderTextureBaseLayer.extend({
 
         // sprite 1
         var sprite1 = cc.Sprite.create(s_fire);
-        sprite1.setPosition(cc.p(winSize.width, winSize.height));
+        sprite1.setPosition(winSize.width, winSize.height);
         this._sprite1 = sprite1;
 
         // sprite 2
         //todo Images/fire_rgba8888.pvr
         var sprite2 = cc.Sprite.create(s_fire);
-        sprite2.setPosition(cc.p(winSize.width, winSize.height));
+        sprite2.setPosition(winSize.width, winSize.height);
         this._sprite2 = sprite2;
 
         /* Create the render texture */
@@ -474,7 +476,7 @@ var RenderTextureTargetNode = RenderTextureBaseLayer.extend({
         var renderTexture = cc.RenderTexture.create(winSize.width, winSize.height);
         this._renderTexture = renderTexture;
 
-        renderTexture.setPosition(cc.p(winSize.width / 2, winSize.height / 2));
+        renderTexture.setPosition(winSize.width / 2, winSize.height / 2);
         //		[renderTexture setPosition:cc.p(s.width, s.height)];
         //		renderTexture.scale = 2;
 
@@ -496,15 +498,15 @@ var RenderTextureTargetNode = RenderTextureBaseLayer.extend({
         var menu = cc.Menu.create(item);
         this.addChild(menu);
 
-        menu.setPosition(cc.p(winSize.width / 2, winSize.height / 2));
+        menu.setPosition(winSize.width / 2, winSize.height / 2);
     },
 
     update:function (dt) {
         var r = 80;
         var locWinSize = this._winSize;
         var locTime = this._time;
-        this._sprite1.setPosition(cc.p(Math.cos(locTime * 2) * r + locWinSize.width /2, Math.sin(locTime * 2) * r + locWinSize.height /2));
-        this._sprite2.setPosition(cc.p(Math.sin(locTime * 2) * r + locWinSize.width /2, Math.cos(locTime * 2) * r + locWinSize.height /2));
+        this._sprite1.setPosition(Math.cos(locTime * 2) * r + locWinSize.width /2, Math.sin(locTime * 2) * r + locWinSize.height /2);
+        this._sprite2.setPosition(Math.sin(locTime * 2) * r + locWinSize.width /2, Math.cos(locTime * 2) * r + locWinSize.height /2);
 
         this._time += dt;
     },

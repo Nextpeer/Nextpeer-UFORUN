@@ -48,15 +48,14 @@ bool MainMenuLayer::init()
 	{
         //////////////////////////////
         // 1. super init first
-        
-        CC_BREAK_IF(! CCLayerGradient::initWithColor(ccc4(31, 31, 31, 255) , ccc4(0, 0, 22, 255), ccp(1.0,-1.0)));
+        CC_BREAK_IF(! CCLayerGradient::initWithColor(ccc4(101, 212, 243, 255) , ccc4(96, 190, 218, 255), ccp(0,-1.0)));
         
         createScreen();
         
-		bRet = true;
-	} while (0);
+        bRet = true;
+    } while (0);
     
-	return bRet;
+    return bRet;
 }
 
 void MainMenuLayer::createScreen () {
@@ -68,7 +67,16 @@ void MainMenuLayer::createScreen () {
     CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Menu.plist");
     _menuBatchNode = CCSpriteBatchNode::create("Menu.png", 200);
     this->addChild(_menuBatchNode);
-
+    
+    // Add some stars to the back screen. plist is only supported on iOS so avoid that on other platforms.
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    MainMenuLayer::addChild(CCParticleSystemQuad::create("Stars1.plist"));
+    MainMenuLayer::addChild(CCParticleSystemQuad::create("Stars2.plist"));
+    MainMenuLayer::addChild(CCParticleSystemQuad::create("Stars2.plist"));
+    MainMenuLayer::addChild(CCParticleSystemQuad::create("Stars3.plist"));
+    MainMenuLayer::addChild(CCParticleSystemQuad::create("Stars2.plist"));
+#endif
+    
     CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("Characters.plist");
     _charactersBatchNode = CCSpriteBatchNode::create("Characters.png", 200);
     this->addChild(_charactersBatchNode);
@@ -85,7 +93,7 @@ void MainMenuLayer::createScreen () {
     
     // Place the earth on the left-bottom corner of the screen
     CCSprite *earth = CCSprite::createWithSpriteFrameName("menu_earth.png");
-    earth->setPosition(ccp(earth->getContentSize().width/3, earth->getContentSize().height/3));
+    earth->setPosition(ccp(earth->getContentSize().width/3, earth->getContentSize().height/4));
     addChild(earth);
     
     // Try to extract the current user profile avatar, if manage to place the avatar selection utils and animate the earth, moon out of the way.

@@ -768,11 +768,11 @@ void GameLayer::preparePlayersForRace(float startLineScreenXPosition)
     sortedPlayers->sort(GameLayer::playerIdComparator);
     
     for (unsigned int i = 0; i < playerCount; i++) {
-        unsigned int rand1 = Rand::generate(0, playerCount);
-        unsigned int rand2 = Rand::generate(0, playerCount);
+        unsigned long rand1 = Rand::generate(0, playerCount);
+        unsigned long rand2 = Rand::generate(0, playerCount);
         
         if (rand1 != rand2) {
-            sortedPlayers->exchangeObjectAtIndex(rand1, rand2);
+            sortedPlayers->exchangeObjectAtIndex((unsigned int)rand1, (unsigned int)rand2);
         }
     }
     

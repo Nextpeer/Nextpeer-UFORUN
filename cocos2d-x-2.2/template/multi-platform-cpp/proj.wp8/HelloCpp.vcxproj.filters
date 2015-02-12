@@ -8,12 +8,6 @@
     <Filter Include="Classes">
       <UniqueIdentifier>{75a4d4c5-4978-4bf9-a391-fbbd7b2d35b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets\Resources">
-      <UniqueIdentifier>{c09e6c12-88ba-4ac4-a100-934ae83cb526}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Assets\Resources\fonts">
-      <UniqueIdentifier>{c20ecf31-94f4-4ac0-bac7-f3d6f170c765}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\ClickAndMoveTest">
       <UniqueIdentifier>{c4067854-d06e-431d-b750-d76dab15655d}</UniqueIdentifier>
     </Filter>
@@ -40,15 +34,6 @@
     <Image Include="Assets\Tiles\IconicTileSmall.png">
       <Filter>Assets</Filter>
     </Image>
-    <Image Include="Assets\Resources\CloseNormal.png">
-      <Filter>Assets\Resources</Filter>
-    </Image>
-    <Image Include="Assets\Resources\CloseSelected.png">
-      <Filter>Assets\Resources</Filter>
-    </Image>
-    <Image Include="Assets\Resources\HelloWorld.png">
-      <Filter>Assets\Resources</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HelloCpp.cpp" />
@@ -58,6 +43,7 @@
     <ClCompile Include="..\Classes\HelloWorldScene.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HelloCpp.h" />
@@ -70,16 +56,23 @@
     <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>Classes</Filter>
     </ClInclude>
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="WMAppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="Assets\Resources\fonts\arial.ttf">
-      <Filter>Assets\Resources\fonts</Filter>
-    </Font>
-    <Font Include="Assets\Resources\fonts\Marker Felt.ttf">
-      <Filter>Assets\Resources\fonts</Filter>
-    </Font>
+    <None Include="..\..\..\external\libwebsockets\wp8\lib\x86\libwebsockets.dll" />
+    <None Include="..\..\..\external\libwebsockets\wp8\lib\arm\libwebsockets.dll" />
+    <None Include="..\..\..\cocos2dx\platform\third_party\wp8\libraries\x86\libcurl.dll" />
+    <None Include="..\..\..\cocos2dx\platform\third_party\wp8\libraries\x86\libeay32.dll" />
+    <None Include="..\..\..\cocos2dx\platform\third_party\wp8\libraries\x86\ssleay32.dll" />
+    <None Include="..\..\..\cocos2dx\platform\third_party\wp8\libraries\arm\libcurl.dll" />
+    <None Include="..\..\..\cocos2dx\platform\third_party\wp8\libraries\arm\libeay32.dll" />
+    <None Include="..\..\..\cocos2dx\platform\third_party\wp8\libraries\arm\ssleay32.dll" />
+    <None Include="..\..\..\cocos2dx\platform\third_party\wp8\libraries\x86\libEGL_phone.dll" />
+    <None Include="..\..\..\cocos2dx\platform\third_party\wp8\libraries\x86\libGLESv2_phone.dll" />
+    <None Include="..\..\..\cocos2dx\platform\third_party\wp8\libraries\arm\libEGL_phone.dll" />
+    <None Include="..\..\..\cocos2dx\platform\third_party\wp8\libraries\arm\libGLESv2_phone.dll" />
   </ItemGroup>
 </Project>

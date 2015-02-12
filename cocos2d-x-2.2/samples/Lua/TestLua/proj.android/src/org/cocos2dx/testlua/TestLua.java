@@ -34,8 +34,10 @@ public class TestLua extends Cocos2dxActivity{
 		super.onCreate(savedInstanceState);
 	}
 	
-	public Cocos2dxGLSurfaceView onCreateGLSurfaceView() {
-    	return new LuaGLSurfaceView(this);
+	public Cocos2dxGLSurfaceView onCreateView() {
+        LuaGLSurfaceView glSurfaceView = new LuaGLSurfaceView(this);
+        glSurfaceView.setEGLConfigChooser(5, 6, 5, 0, 16, 8);
+    	return glSurfaceView;
     }
 
     static {
@@ -48,12 +50,4 @@ class LuaGLSurfaceView extends Cocos2dxGLSurfaceView{
 	public LuaGLSurfaceView(Context context){
 		super(context);
 	}
-	
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-    	// exit program when key back is entered
-    	if (keyCode == KeyEvent.KEYCODE_BACK) {
-    		android.os.Process.killProcess(android.os.Process.myPid());
-    	}
-        return super.onKeyDown(keyCode, event);
-    }
 }

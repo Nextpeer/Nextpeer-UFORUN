@@ -82,16 +82,13 @@ EXTENSIONS_SOURCES = ../CCBReader/CCBFileLoader.cpp \
 ../CocoStudio/Armature/utils/CCTransformHelp.cpp \
 ../CocoStudio/Armature/utils/CCTweenFunction.cpp \
 ../CocoStudio/Armature/utils/CCUtilMath.cpp \
-../CocoStudio/GUI/BaseClasses/UIRootWidget.cpp \
 ../CocoStudio/GUI/BaseClasses/UIWidget.cpp \
-../CocoStudio/GUI/Layouts/Layout.cpp \
-../CocoStudio/GUI/Layouts/LayoutParameter.cpp \
+../CocoStudio/GUI/Layouts/UILayout.cpp \
+../CocoStudio/GUI/Layouts/UILayoutParameter.cpp \
 ../CocoStudio/GUI/Layouts/UILayoutDefine.cpp \
 ../CocoStudio/GUI/System/CocosGUI.cpp \
 ../CocoStudio/GUI/System/UIHelper.cpp \
-../CocoStudio/GUI/System/UIInputManager.cpp \
-../CocoStudio/GUI/System/UILayer.cpp \
-../CocoStudio/GUI/UIWidgets/ScrollWidget/UIDragPanel.cpp \
+../CocoStudio/GUI/System/UITouchGroup.cpp \
 ../CocoStudio/GUI/UIWidgets/ScrollWidget/UIListView.cpp \
 ../CocoStudio/GUI/UIWidgets/ScrollWidget/UIPageView.cpp \
 ../CocoStudio/GUI/UIWidgets/ScrollWidget/UIScrollView.cpp \
@@ -103,26 +100,41 @@ EXTENSIONS_SOURCES = ../CCBReader/CCBFileLoader.cpp \
 ../CocoStudio/GUI/UIWidgets/UILabelBMFont.cpp \
 ../CocoStudio/GUI/UIWidgets/UILoadingBar.cpp \
 ../CocoStudio/GUI/UIWidgets/UISlider.cpp \
-../CocoStudio/GUI/UIWidgets/UISwitch.cpp \
 ../CocoStudio/GUI/UIWidgets/UITextField.cpp \
+../CocoStudio/GUI/UIWidgets/UIRichText.cpp \
 ../CocoStudio/Components/CCComAttribute.cpp \
 ../CocoStudio/Components/CCComAudio.cpp \
 ../CocoStudio/Components/CCComController.cpp \
 ../CocoStudio/Components/CCComRender.cpp \
 ../CocoStudio/Components/CCInputDelegate.cpp \
-../CocoStudio/Json/CSContentJsonDictionary.cpp \
 ../CocoStudio/Json/DictionaryHelper.cpp \
-../CocoStudio/Json/lib_json/json_value.cpp \
-../CocoStudio/Json/lib_json/json_reader.cpp \
-../CocoStudio/Json/lib_json/json_writer.cpp \
-../CocoStudio/Reader/CCSSceneReader.cpp \
-../CocoStudio/Reader/CCSGUIReader.cpp \
+../CocoStudio/Json/CocoLoader.cpp\
+../CocoStudio/Reader/SceneReader.cpp \
+../CocoStudio/Reader/GUIReader.cpp \
+../CocoStudio/Reader/WidgetReader/WidgetReader.cpp \
+../CocoStudio/Reader/WidgetReader/ButtonReader/ButtonReader.cpp \
+../CocoStudio/Reader/WidgetReader/CheckBoxReader/CheckBoxReader.cpp \
+../CocoStudio/Reader/WidgetReader/ImageViewReader/ImageViewReader.cpp \
+../CocoStudio/Reader/WidgetReader/LabelAtlasReader/LabelAtlasReader.cpp \
+../CocoStudio/Reader/WidgetReader/LabelBMFontReader/LabelBMFontReader.cpp \
+../CocoStudio/Reader/WidgetReader/LabelReader/LabelReader.cpp \
+../CocoStudio/Reader/WidgetReader/LayoutReader/LayoutReader.cpp \
+../CocoStudio/Reader/WidgetReader/ListViewReader/ListViewReader.cpp \
+../CocoStudio/Reader/WidgetReader/LoadingBarReader/LoadingBarReader.cpp \
+../CocoStudio/Reader/WidgetReader/PageViewReader/PageViewReader.cpp \
+../CocoStudio/Reader/WidgetReader/ScrollViewReader/ScrollViewReader.cpp \
+../CocoStudio/Reader/WidgetReader/SliderReader/SliderReader.cpp \
+../CocoStudio/Reader/WidgetReader/TextFieldReader/TextFieldReader.cpp \
 ../CocoStudio/Action/CCActionManager.cpp \
 ../CocoStudio/Action/CCActionObject.cpp \
 ../CocoStudio/Action/CCActionNode.cpp \
 ../CocoStudio/Action/CCActionFrame.cpp \
+../CocoStudio/Action/CCActionEaseEx.cpp \
 ../CocoStudio/Action/CCActionFrameEasing.cpp \
-
+../CocoStudio/Trigger/ObjectFactory.cpp \
+../CocoStudio/Trigger/TriggerBase.cpp \
+../CocoStudio/Trigger/TriggerMng.cpp \
+../CocoStudio/Trigger/TriggerObj.cpp \
 
 all:
 

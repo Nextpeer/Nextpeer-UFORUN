@@ -26,11 +26,18 @@
 #include "HttpClient.h"
 // #include "platform/CCThread.h"
 
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT) && (CC_TARGET_PLATFORM != CC_PLATFORM_WP8)
-
-#include <queue>
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) ||  (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#include "CCPThreadWinRT.h"
+typedef void THREAD_VOID;
+#define THREAD_RETURN
+#else
 #include <pthread.h>
+typedef void* THREAD_VOID;
+#define THREAD_RETURN 0
+#endif
+
 #include <errno.h>
+#include <queue>
 
 #include "curl/curl.h"
 
@@ -95,7 +102,7 @@ static int processDeleteTask(CCHttpRequest *request, write_callback callback, vo
 
 
 // Worker thread
-static void* networkThread(void *data)
+static THREAD_VOID networkThread(THREAD_VOID)
 {    
     CCHttpRequest *request = NULL;
     
@@ -226,7 +233,8 @@ static void* networkThread(void *data)
 
     pthread_exit(NULL);
     
-    return 0;
+    return THREAD_RETURN;
+
 }
 
 //Configure curl's timeout property
@@ -251,6 +259,10 @@ static bool configureCURL(CURL *handle)
     }
     curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, 0L);
     curl_easy_setopt(handle, CURLOPT_SSL_VERIFYHOST, 0L);
+
+    // FIXED #3224: The subthread of CCHttpClient interrupts main thread if timeout comes.
+    // Document is here: http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTNOSIGNAL 
+    curl_easy_setopt(handle, CURLOPT_NOSIGNAL, 1L);
 
     return true;
 }
@@ -432,10 +444,10 @@ bool CCHttpClient::lazyInitThreadSemphore()
         pthread_mutex_init(&s_SleepMutex, NULL);
         pthread_cond_init(&s_SleepCondition, NULL);
 
+        need_quit = false;
         pthread_create(&s_networkThread, NULL, networkThread, NULL);
         pthread_detach(s_networkThread);
         
-        need_quit = false;
     }
     
     return true;
@@ -506,7 +518,6 @@ void CCHttpClient::dispatchResponseCallbacks(float delta)
 
 NS_CC_EXT_END
 
-#endif // CC_TARGET_PLATFORM != CC_PLATFORM_WINRT) && (CC_TARGET_PLATFORM != CC_PLATFORM_WP8)
 
 
 

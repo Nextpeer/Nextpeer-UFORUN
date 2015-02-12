@@ -58,16 +58,21 @@ public: \
 NS_CC_EXT_BEGIN
 
 /**
-* The base node include a lot of attributes.
-* @js NA
-* @lua NA
-*/
-class  CCBaseData : public CCObject
+ * The base node include a lot of attributes.
+ * @lua NA
+ */
+class  CC_EX_DLL CCBaseData : public CCObject
 {
 public:
     CC_CREATE_NO_PARAM_NO_INIT(CCBaseData)
 public:
+    /**
+     *  @js ctor
+     */
     CCBaseData();
+    /**
+     *  @js NA
+     */
     ~CCBaseData(void);
 
     /*
@@ -124,7 +129,7 @@ enum DisplayType
 *   @js NA
 *   @lua NA
 */
-class  CCDisplayData : public CCObject
+class  CC_EX_DLL CCDisplayData : public CCObject
 {
 public:
     CC_CREATE_NO_PARAM_NO_INIT(CCDisplayData)
@@ -132,9 +137,12 @@ public:
     static const char *changeDisplayToTexture(const char *displayName);
 public:
     CCDisplayData();
-    virtual ~CCDisplayData(void);
+    virtual ~CCDisplayData(void) {};
+
+    virtual void copy(CCDisplayData *displayData);
 
     DisplayType displayType;	//! mark which type your display is
+    std::string displayName;
 };
 
 
@@ -142,29 +150,16 @@ public:
 *   @js NA
 *   @lua NA
 */
-class  CCSpriteDisplayData : public CCDisplayData
+class  CC_EX_DLL CCSpriteDisplayData : public CCDisplayData
 {
 public:
     CC_CREATE_NO_PARAM_NO_INIT(CCSpriteDisplayData)
 public:
     CCSpriteDisplayData();
-    virtual ~CCSpriteDisplayData();
+    virtual ~CCSpriteDisplayData() {};
 
-    inline void setParam(const char *displayName)
-    {
-        this->displayName = displayName;
-    }
-    void copy(CCSpriteDisplayData *displayData);
+    void copy(CCDisplayData *displayData);
 public:
-    /**
-    * If DisplayType is CS_DISPLAY_SPRITE, then CCBone will use this image name to create a CCSprite from CCSpriteFrameCache.
-    * It should note that when use this name to create CCSprite from CCSpriteFrameCache, you should use m_strDisplayName + ".png", because when use Texture Packer to pack single image file, the name have ".png".
-    *
-    * If DisplayType is CS_DISPLAY_ARMATURE, the name is the CCArmature's name. When CCBone init display and type is CS_DISPLAY_ARMATURE,
-    * then CCBone will create a CCArmature.
-    */
-    std::string displayName;
-
     CCBaseData skinData;
 };
 
@@ -172,51 +167,27 @@ public:
 *   @js NA
 *   @lua NA
 */
-class  CCArmatureDisplayData  : public CCDisplayData
+class  CC_EX_DLL CCArmatureDisplayData  : public CCDisplayData
 {
 public:
     CC_CREATE_NO_PARAM_NO_INIT(CCArmatureDisplayData)
 public:
     CCArmatureDisplayData();
-    virtual ~CCArmatureDisplayData();
-
-    inline void setParam(const char *displayName)
-    {
-        this->displayName = displayName;
-    }
-    void copy(CCArmatureDisplayData *displayData);
-public:
-    /**
-    * If DisplayType is CS_DISPLAY_SPRITE, then CCBone will use this image name to create a CCSprite from CCSpriteFrameCache.
-    * It should note that when use this name to create CCSprite from CCSpriteFrameCache, you should use m_strDisplayName + ".png", because when use Texture Packer to pack single image file, the name have ".png".
-    *
-    * If DisplayType is CS_DISPLAY_ARMATURE, the name is the CCArmature's name. When CCBone init display and type is CS_DISPLAY_ARMATURE,
-    * then CCBone will create a CCArmature.
-    */
-    std::string displayName;
-
+    virtual ~CCArmatureDisplayData() {};
 };
 
 /**
 *   @js NA
 *   @lua NA
 */
-class  CCParticleDisplayData : public CCDisplayData
+class  CC_EX_DLL CCParticleDisplayData : public CCDisplayData
 {
 public:
     CC_CREATE_NO_PARAM_NO_INIT(CCParticleDisplayData)
 public:
     CCParticleDisplayData();
     virtual ~CCParticleDisplayData() {};
-
-    void setParam(const char *plist)
-    {
-        this->plist = plist;
-    }
-
-    void copy(CCParticleDisplayData *displayData);
 public:
-    std::string plist;
 };
 
 
@@ -228,7 +199,7 @@ public:
 * @js NA
 * @lua NA
 */
-class  CCBoneData : public CCBaseData
+class  CC_EX_DLL CCBoneData : public CCBaseData
 {
 public:
     CC_CREATE_NO_PARAM(CCBoneData)
@@ -255,7 +226,7 @@ public:
 * @js NA
 * @lua NA
 */
-class  CCArmatureData : public CCObject
+class  CC_EX_DLL CCArmatureData : public CCObject
 {
 public:
     CC_CREATE_NO_PARAM(CCArmatureData)
@@ -294,7 +265,7 @@ enum CCBlendType
 * @js NA
 * @lua NA
 */
-class  CCFrameData : public CCBaseData
+class  CC_EX_DLL CCFrameData : public CCBaseData
 {
 public:
     CC_CREATE_NO_PARAM_NO_INIT(CCFrameData)
@@ -306,7 +277,11 @@ public:
 public:
     int frameID;
     int duration;                //! The frame will last duration frames
+
     CCTweenType tweenEasing;     //! Every frame's tween easing effect
+    int easingParamNumber;
+    float *easingParams;
+
     bool isTween;                //! Whether it's a tween key frame
 
     /**
@@ -315,7 +290,7 @@ public:
     */
     int displayIndex;
 
-    CCBlendType blendType;
+    ccBlendFunc blendFunc;
 
     std::string strEvent;
     /**
@@ -330,7 +305,7 @@ public:
 * @js NA
 * @lua NA
 */
-class  CCMovementBoneData : public CCObject
+class  CC_EX_DLL CCMovementBoneData : public CCObject
 {
 public:
     CC_CREATE_NO_PARAM(CCMovementBoneData)
@@ -355,7 +330,7 @@ public:
 * @js NA
 * @lua NA
 */
-class  CCMovementData : public CCObject
+class  CC_EX_DLL CCMovementData : public CCObject
 {
 public:
     CC_CREATE_NO_PARAM_NO_INIT(CCMovementData)
@@ -410,7 +385,7 @@ public:
 *  @js NA
 *  @lua NA
 */
-class  CCAnimationData : public CCObject
+class  CC_EX_DLL CCAnimationData : public CCObject
 {
 public:
     CC_CREATE_NO_PARAM_NO_INIT(CCAnimationData)
@@ -428,12 +403,12 @@ public:
 };
 
 
-struct CCContourVertex2 : public CCObject
+struct CC_EX_DLL CCContourVertex2 : public CCObject
 {
-    CCContourVertex2(float x, float y)
+    CCContourVertex2(float xx, float yy)
     {
-        this->x = x;
-        this->y = y;
+        this->x = xx;
+        this->y = yy;
     }
 
     float x;
@@ -445,7 +420,7 @@ struct CCContourVertex2 : public CCObject
 * @js NA
 * @lua NA
 */
-class  CCContourData : public CCObject
+class  CC_EX_DLL CCContourData : public CCObject
 {
 public:
     CC_CREATE_NO_PARAM(CCContourData)
@@ -467,7 +442,7 @@ public:
 * @js NA
 * @lua NA
 */
-class  CCTextureData : public CCObject
+class  CC_EX_DLL CCTextureData : public CCObject
 {
 public:
     CC_CREATE_NO_PARAM(CCTextureData)

@@ -17,13 +17,13 @@ void GameContactListener::BeginContact(b2Contact* contact) {
     
     //check if fixture A was the foot sensor
     void* fixtureUserData = contact->GetFixtureA()->GetUserData();
-    if ((int)fixtureUserData == HERO_FOOT) {
+    if (*(int *)fixtureUserData == HERO_FOOT) {
         _numFootContacts++;
     }
     
     //check if fixture B was the foot sensor
     fixtureUserData = contact->GetFixtureB()->GetUserData();
-    if ((int)fixtureUserData == HERO_FOOT) {
+    if (*(int *)fixtureUserData == HERO_FOOT) {
         _numFootContacts++;
     }
 }
@@ -32,12 +32,12 @@ void GameContactListener::EndContact(b2Contact* contact) {
     
     //check if fixture A was the foot sensor
     void* fixtureUserData = contact->GetFixtureA()->GetUserData();
-    if ((int)fixtureUserData == HERO_FOOT) {
+    if (*(int *)fixtureUserData == HERO_FOOT) {
         _numFootContacts--;
     }
     //check if fixture B was the foot sensor
     fixtureUserData = contact->GetFixtureB()->GetUserData();
-    if ((int)fixtureUserData == HERO_FOOT) {
+    if (*(int *)fixtureUserData == HERO_FOOT) {
         _numFootContacts--;
     }
 }

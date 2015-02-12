@@ -1,3 +1,98 @@
+cocos2d-x-2.2.6 @Dec.12 2014
+     [NEW]    C++: iOS 64-bit support
+     [NEW]    Lua-binding: add xxtea support
+ 
+     [FIX]    C++: add launch images for iPhone6/iPhone6+
+     [FIX]    CCClippingNode: effect is wrong if apply CCClippingNode in a Node and its children
+     [FIX]    EditBox: orientation issue on iOS8+
+     [FIX]    EditBox: text position and move animation error on iPhone6 Plus
+     [FIX]    LabelReader: compilation fix on Android
+     [FIX]    Optimize FPS control algorithm on Android
+     [FIX]    SimpleAudioEngine: playBackgroundMusic() crashed on Lollipop
+
+cocos2d-x-2.2.5 @Jul.10 2014
+     [NEW]    Cocos Studio: support Cocos Studio v1.0beta for Mac OS X and v1.5.0.1 for windows
+     
+     [FIX]    CCEditBox: input cause crash on iPhone5s
+     [FIX]    WP8: Box2D and Chipmunk projects build issue with VS2013 Express
+
+cocos2d-x-2.2.4 @Jun.19 2014
+     [NEW]    WP8: curl and websockets are supported
+     [NEW]    CocoStudio: supported binary file format output of CocoStudio
+
+     [FIX]    Audio: Limit max sound number to 3 to fix crash on sumsung i9100
+     [FIX]    CCLabelBMFont: Crash when there are invalid characters which aren't in fnt file
+     [FIX]    CCImage: fix font blur on Android
+     [FIX]    CCSpriteFrameCache: fix memory leak
+     [FIX]    CocoStudio: ArmatureDataManager::removeArmatureFileInfo can't remove image from cache
+     [FIX]    CocoStudio: Bone's position is wrong  when animation has only a single bone
+     [FIX]    CocoStudio: Logical error in CCBone:: setBlendFunc 
+     [FIX]    Label: Missing letters if running on iOS devices with arm64
+     [FIX]    WP8: precompiled headers are enabled, Angle libs are precompiled
+     [FIX]    WP8: WP8-XAML uses DrawingSurfaceBackgroundGrid for better performance and to fix Device memory leak with DrawingSurface
+     [FIX]    WP8: Added purgeSharedSpriteFrameCache() to purge in CCDirector to fix dangling refcounts on textures
+     [FIX]    WP8 & WinRT: Removed debug prebuilt libs
+     [FIX]    WP8 & WinRT: Label created with LabelTTF has black border on WINRT/WP8
+     [FIX]    WP8: will restart if app goes to background, then touches icon to go to foreground
+     [FIX]    WP8: fix a memory leak when the phone switches between apps
+     [FIX]    WP8: updated angle to fix memory leak when closing angle
+     
+cocos2d-x-2.2.3 @Mar.14 2014
+[All]
+     [NEW]    Adds Dutch Language support.
+     [FIX]    CocoStudio: SceneTest crash after switching to another scene.
+     [FIX]    CocoStudio: Logic error in 'TriggerObj::detect'.
+     [FIX]    CCControlSwitch behaves wrongly when there are two instances of CCControlSwitch exist in the same scene
+     [FIX]    Reload a picture though it is cached in TextureCache 
+
+[Android]
+     [FIX]    Screen would be flickering when switching to a new activity.
+     [FIX]    Initialize CCDirectory::m_fSecondsPerFrame to avoid crash
+
+[WP8 | WinRT]
+     [FIX]    Added Lua bindings support for Wp8 and WinRT.
+     [FIX]    Added CCEditBox support for wp8.
+     [FIX]    Used the correct resolution policy in CCEGLView::UpdateWindowSize.
+     [FIX]    Added lost XAML project template
+     [FIX]    Added documents for the usage of WP8 & WinRT port 
+
+[JSBindings]
+     [NEW]    Added 'setTimeout' and 'setInterval' for JSB.
+
+[Emscripten]
+     [NEW]    Added emscripten support for Windows Host.
+
+[LuaBindings]
+     [NEW]    Added more test cases for CocoStuidoTest/SceneTest.
+     [FIX]    CCComponent class wasn't exposed to LUA.
+     [FIX]    The setFrameEventCallFunc and setMovementEventCallFunc of CCArmature called at the same time in lua script would lead to crash
+
+cocos2d-x-2.2.2 @Jan.07 2014
+[Windows8 & WinPhone8]
+     [FIX]    Updated WinRT and WP8 to pass App Certification tests
+     [FIX]    Updated to latest version of ANGLE
+     [FIX]    Fixed type that was preventing loading of precompiled shaders in Windows 8 WinRT builds
+     [FIX]    Fixed CCEGLView::SetScissorInPoints() on WP8 to fixed libextensions CCScollView bug
+     [NEW]    Added Trim() support for app Suspend() in Windows 8.1 WinRT
+     [FIX]    A memory leak fix when loading JSC(JS bytecode) file.
+     [NEW]    WP8 XAML support
+     [FIX]    cc.BuilderReader.load( path, null, parentSize ); was not allowed.
+     [FIX]    Fixes the font rendering on Windows
+
+cocos2d-x-2.2.1 @Nov.19 2013
+[All platforms]
+     [NEW]    Supports CocoStudio v1.1
+     [NEW]    CCUserDefault: pass size to XMLDocument::Parse()
+[Javascript binding]
+     [NEW]    Supports CocoStudio v1.1
+[Lua binding]
+     [FIX]    Clean up peertable after object is deleted
+[WinPhone8 & Windows8]
+     [FIX]    Use "PMingLiu" to show Chinese characters
+     [NEW]    Add "SimpleGame" project
+     [NEW]    Add VS2013 project
+     [FIX]    Many bugs fixed
+
 cocos2d-x-2.2.0 @Sep.25 2013
 [All platforms]
      [NEW]    CocoStudio GUI

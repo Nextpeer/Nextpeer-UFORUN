@@ -21,62 +21,136 @@ bool UIScene::init()
 {
     if (CCLayer::init())
     {
+        /*
+        cc_timeval startval, endval;
+        double del = 0;
+        
+        CCTime::gettimeofdayCocos2d(&startval, NULL);
+         */
+        
+        
+        
         m_pUiLayer = UILayer::create();
-        m_pUiLayer->scheduleUpdate();
         addChild(m_pUiLayer);
         
-        m_pWidget = dynamic_cast<Layout*>(CCUIHELPER->createWidgetFromJsonFile("cocosgui/UITest/UITest.json"));
+        m_pWidget = static_cast<Layout*>(GUIReader::shareReader()->widgetFromJsonFile("cocosui/UITest/UITest.json"));
         m_pUiLayer->addWidget(m_pWidget);
+
         
-        m_pSceneTitle = dynamic_cast<UILabel*>(m_pUiLayer->getWidgetByName("UItest"));
         
-        UILabel *back_label = dynamic_cast<UILabel*>(m_pUiLayer->getWidgetByName("back"));
-        back_label->addReleaseEvent(this, coco_releaseselector(UIScene::toExtensionsMainLayer));
         
-        UIButton *left_button = dynamic_cast<UIButton*>(m_pUiLayer->getWidgetByName("left_Button"));
-        left_button->addReleaseEvent(this, coco_releaseselector(UIScene::previousCallback));
+        /*
+        CCTime::gettimeofdayCocos2d(&endval, NULL);
+        del = CCTime::timersubCocos2d(&startval,&endval);
+        CCLOG("first %f",del);
+         */
         
-        UIButton *middle_button = dynamic_cast<UIButton*>(m_pUiLayer->getWidgetByName("middle_Button"));
-        middle_button->addReleaseEvent(this, coco_releaseselector(UIScene::restartCallback));
         
-        UIButton *right_button = dynamic_cast<UIButton*>(m_pUiLayer->getWidgetByName("right_Button"));
-        right_button->addReleaseEvent(this, coco_releaseselector(UIScene::nextCallback));
+        
+        CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
+        CCSize rootSize = m_pWidget->getSize();
+        m_pUiLayer->setPosition(CCPoint((screenSize.width - rootSize.width) / 2,
+                                        (screenSize.height - rootSize.height) / 2));
+        m_pSceneTitle = static_cast<ui::Label*>(UIHelper::seekWidgetByName(m_pWidget, "UItest"));
+        
+        ui::Label* back_label = static_cast<ui::Label*>(UIHelper::seekWidgetByName(m_pWidget, "back"));
+        back_label->addTouchEventListener(this, toucheventselector(UIScene::toCocosGUITestScene));
+        
+        Button* left_button = static_cast<Button*>(UIHelper::seekWidgetByName(m_pWidget, "left_Button"));
+        left_button->addTouchEventListener(this, toucheventselector(UIScene::previousCallback));
+        
+        Button* middle_button = static_cast<Button*>(UIHelper::seekWidgetByName(m_pWidget, "middle_Button"));
+        middle_button->addTouchEventListener(this, toucheventselector(UIScene::restartCallback));
+        
+        Button* right_button = static_cast<Button*>(UIHelper::seekWidgetByName(m_pWidget, "right_Button"));
+        right_button->addTouchEventListener(this, toucheventselector(UIScene::nextCallback));
+        
+
+        
+        
+        
+        
+        
+        /*
+        CCTime::gettimeofdayCocos2d(&startval, NULL);
+        for (int i = 0; i < 10; i++)
+        {
+            m_pWidget->clone();
+        }
+        CCTime::gettimeofdayCocos2d(&endval, NULL);
+        del = CCTime::timersubCocos2d(&startval,&endval);
+        CCLOG("clone %f",del);
+        CCTime::gettimeofdayCocos2d(&startval, NULL);
+        for (int i = 0; i < 10; i++)
+        {
+            GUIReader::shareReader()->widgetFromJsonFile("cocosui/UITest/UITest.json");
+        }
+        CCTime::gettimeofdayCocos2d(&endval, NULL);
+        del = CCTime::timersubCocos2d(&startval,&endval);
+        CCLOG("create %f",del);
+         */
         
         return true;
     }
     return false;
 }
 
-void UIScene::toExtensionsMainLayer(CCObject* sender)
+void UIScene::toCocosGUITestScene(CCObject* sender, TouchEventType type)
 {
-    UISceneManager::purgeUISceneManager();
-    ActionManager::purgeActionManager();
-    UIHelper::purgeUIHelper();
-    CCSSceneReader::sharedSceneReader()->purgeSceneReader();
-    
-    CocosGUITestScene* pScene = new CocosGUITestScene();
-    pScene->runThisTest();
-    pScene->release();
+    switch (type)
+    {
+        case TOUCH_EVENT_ENDED:
+        {
+            UISceneManager::purgeUISceneManager();
+            ActionManager::purge();
+            
+            CocosGUITestScene* pScene = new CocosGUITestScene();
+            pScene->runThisTest();
+            pScene->release();
+        }
+            break;
+            
+        default:
+            break;
+    }
   
 }
 
-void UIScene::previousCallback(CCObject* sender)
+void UIScene::previousCallback(CCObject* sender, TouchEventType type)
 {
-	m_pUiLayer->unscheduleUpdate();
-	m_pUiLayer->removeFromParent();
-    CCDirector::sharedDirector()->replaceScene(UISceneManager::sharedUISceneManager()->previousUIScene());
+    switch (type)
+    {
+        case TOUCH_EVENT_ENDED:
+            CCDirector::sharedDirector()->replaceScene(UISceneManager::sharedUISceneManager()->previousUIScene());
+            break;
+            
+        default:
+            break;
+    }
 }
 
-void UIScene::restartCallback(CCObject* sender)
+void UIScene::restartCallback(CCObject* sender, TouchEventType type)
 {
-	m_pUiLayer->unscheduleUpdate();
-	m_pUiLayer->removeFromParent();
-    CCDirector::sharedDirector()->replaceScene(UISceneManager::sharedUISceneManager()->currentUIScene());
+    switch (type)
+    {
+        case TOUCH_EVENT_ENDED:
+            CCDirector::sharedDirector()->replaceScene(UISceneManager::sharedUISceneManager()->currentUIScene());
+            break;
+            
+        default:
+            break;
+    }
 }
 
-void UIScene::nextCallback(CCObject* sender)
+void UIScene::nextCallback(CCObject* sender, TouchEventType type)
 {
-	m_pUiLayer->unscheduleUpdate();
-	m_pUiLayer->removeFromParent();
-    CCDirector::sharedDirector()->replaceScene(UISceneManager::sharedUISceneManager()->nextUIScene());
+    switch (type)
+    {
+        case TOUCH_EVENT_ENDED:
+            CCDirector::sharedDirector()->replaceScene(UISceneManager::sharedUISceneManager()->nextUIScene());
+            break;
+            
+        default:
+            break;
+    }
 }

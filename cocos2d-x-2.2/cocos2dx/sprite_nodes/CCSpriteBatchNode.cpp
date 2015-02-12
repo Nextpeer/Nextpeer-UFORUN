@@ -175,7 +175,7 @@ void CCSpriteBatchNode::addChild(CCNode *child, int zOrder, int tag)
     CCSprite *pSprite = (CCSprite*)(child);
     // check CCSprite is using the same texture id
     CCAssert(pSprite->getTexture()->getName() == m_pobTextureAtlas->getTexture()->getName(), "CCSprite is not using the same texture id");
-    
+
     CCNode::addChild(child, zOrder, tag);
 
     appendChild(pSprite);
@@ -762,9 +762,8 @@ CCSpriteBatchNode * CCSpriteBatchNode::addSpriteWithoutQuad(CCSprite*child, unsi
     {
         CCSprite* pChild = (CCSprite*) pObject;
         if (pChild && (pChild->getAtlasIndex() >= z))
-        {
-            ++i;
-        }
+            break;
+        ++i;
     }
     
     m_pobDescendants->insertObject(child, i);

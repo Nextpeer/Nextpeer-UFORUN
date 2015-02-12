@@ -38,13 +38,15 @@ var cocos2dApp = cc.Application.extend({
         // initialize director
         var director = cc.Director.getInstance();
 
+        cc.EGLView.getInstance().adjustViewPort(true);
         cc.EGLView.getInstance().setDesignResolutionSize(320,480,cc.RESOLUTION_POLICY.SHOW_ALL);
+        cc.EGLView.getInstance().resizeWithBrowserSize(true);
 
         // turn on display FPS
         director.setDisplayStats(this.config['showFPS']);
 
         // set FPS. the default value is 1.0/60 if you don't call this
-        director.setAnimationInterval(1.0 / this.config.frameRate);
+        director.setAnimationInterval(1.0 / this.config['frameRate']);
 
         //load resources
         cc.LoaderScene.preload(g_mainmenu, function () {
@@ -76,6 +78,7 @@ var s_ptBottomRight = cc.PointZero();
 var s_ptBottom = cc.PointZero();
 var s_ptLeft = cc.PointZero();
 var s_ptTopLeft = cc.PointZero();
+var s_ptBottomLeft = cc.PointZero();
 
 var VisibleRect = {
     rect:function () {
@@ -134,7 +137,7 @@ var VisibleRect = {
         return s_ptBottom;
     },
     bottomLeft:function () {
-        return this.rect().origin;
+        return s_ptBottomLeft;
     },
     left:function () {
         if (s_ptLeft.x == 0) {

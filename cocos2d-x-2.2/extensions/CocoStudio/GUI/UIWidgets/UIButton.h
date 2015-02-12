@@ -27,28 +27,33 @@
 
 #include "../BaseClasses/UIWidget.h"
 
-NS_CC_EXT_BEGIN
+NS_CC_BEGIN
+
+namespace ui{
+
 /**
 *   @js NA
 *   @lua NA
 */
-class UIButton : public UIWidget
+class CC_EX_DLL Button : public Widget
 {
+    DECLARE_CLASS_GUI_INFO
+    
 public:
     /**
      * Default constructor
      */
-    UIButton();
+    Button();
     
     /**
      * Default destructor
      */
-    virtual ~UIButton();
+    virtual ~Button();
     
     /**
      * Allocates and initializes.
      */
-    static UIButton* create();
+    static Button* create();
     
     /**
      * Load textures for button.
@@ -104,6 +109,8 @@ public:
      */
     void setCapInsetsNormalRenderer(const CCRect &capInsets);
     
+    const CCRect& getCapInsetNormalRenderer();
+    
     /**
      * Sets capinsets for button, if button is using scale9 renderer.
      *
@@ -111,12 +118,16 @@ public:
      */
     void setCapInsetsPressedRenderer(const CCRect &capInsets);
     
+    const CCRect& getCapInsetPressedRenderer();
+    
     /**
      * Sets capinsets for button, if button is using scale9 renderer.
      *
      * @param capInsets    capinsets for button
      */
     void setCapInsetsDisabledRenderer(const CCRect &capInsets);
+    
+    const CCRect& getCapInsetDisabledRenderer();
     
     //override "setAnchorPoint" of widget.
     virtual void setAnchorPoint(const CCPoint &pt);
@@ -128,17 +139,7 @@ public:
      */
     virtual void setScale9Enabled(bool able);
     
-    //override "setFlipX" of widget.
-    virtual void setFlipX(bool flipX);
-    
-    //override "setFlipY" of widget.
-    virtual void setFlipY(bool flipY);
-    
-    //override "isFlipX" of widget.
-    virtual bool isFlipX();
-    
-    //override "isFlipY" of widget.
-    virtual bool isFlipY();
+    bool isScale9Enabled();
     
     /**
      * Changes if button can be clicked zoom effect.
@@ -157,20 +158,11 @@ public:
     virtual CCNode* getVirtualRenderer();
     
     /**
-     * Sets color to widget
-     *
-     * It default change the color of widget's children.
-     *
-     * @param color
-     */
-    virtual void setColor(const ccColor3B &color);
-    
-    /**
      * Returns the "class name" of widget.
      */
-    virtual const char* getDescription() const;
+    virtual std::string getDescription() const;
     
-    void setTitleText(const char* text);
+    void setTitleText(const std::string& text);
     const char* getTitleText() const;
     void setTitleColor(const ccColor3B& color);
     const ccColor3B& getTitleColor() const;
@@ -178,21 +170,6 @@ public:
     float getTitleFontSize() const;
     void setTitleFontName(const char* fontName);
     const char* getTitleFontName() const;
-    /*Compatible*/
-    /**
-     * These methods will be removed
-     */
-    void setText(const char* text){setTitleText(text);};
-    void setTextColor(int r,int g,int b){setTitleColor(ccc3(r, g, b));};
-    void setFontSize(int size){setTitleFontSize(size);};
-    void setFontName(const char* fontName){setTitleFontName(fontName);};
-    void setTextures(const char* normal,const char* selected,const char* disabled,TextureResType texType = UI_TEX_TYPE_LOCAL){loadTextures(normal, selected, disabled, texType);};
-    void setNormalTexture(const char* normal, TextureResType texType = UI_TEX_TYPE_LOCAL){loadTextureNormal(normal,texType);};
-    void setPressedTexture(const char* selected, TextureResType texType = UI_TEX_TYPE_LOCAL){loadTexturePressed(selected,texType);};
-    void setDisabledTexture(const char* disabled, TextureResType texType = UI_TEX_TYPE_LOCAL){loadTextureDisabled(disabled,texType);};
-    void setScale9Enable(bool able){setScale9Enabled(able);};
-    void setScale9Size(const CCSize& size){setScale9Enabled(true);setSize(size);};
-    /************/
 
 protected:
     virtual bool init();
@@ -201,34 +178,48 @@ protected:
     virtual void onPressStateChangedToPressed();
     virtual void onPressStateChangedToDisabled();
     virtual void onSizeChanged();
-    
+    virtual void updateTextureColor();
+    virtual void updateTextureOpacity();
+    virtual void updateTextureRGBA();
+    virtual void updateFlippedX();
+    virtual void updateFlippedY();
     void normalTextureScaleChangedWithSize();
     void pressedTextureScaleChangedWithSize();
     void disabledTextureScaleChangedWithSize();
+    virtual Widget* createCloneInstance();
+    virtual void copySpecialProperties(Widget* model);
 protected:
-    CCNode* m_pButtonNormalRenderer;
-    CCNode* m_pButtonClickedRenderer;
-    CCNode* m_pButtonDisableRenderer;
-    CCLabelTTF* m_pTitleRenderer;
-    std::string m_strNormalFileName;
-    std::string m_strClickedFileName;
-    std::string m_strDisabledFileName;
-    bool m_bPrevIgnoreSize;
-    bool m_bScale9Enabled;
-//    CCRect m_capInsets;
-    CCRect m_capInsetsNormal;
-    CCRect m_capInsetsPressed;
-    CCRect m_capInsetsDisabled;
-    TextureResType m_eNormalTexType;
-    TextureResType m_ePressedTexType;
-    TextureResType m_eDisabledTexType;
-    CCSize m_normalTextureSize;
-    CCSize m_pressedTextureSize;
-    CCSize m_disabledTextureSize;
-    bool m_bPressedActionEnabled;
-    ccColor3B m_titleColor;
+    CCNode* _buttonNormalRenderer;
+    CCNode* _buttonClickedRenderer;
+    CCNode* _buttonDisableRenderer;
+    CCLabelTTF* _titleRenderer;
+    std::string _normalFileName;
+    std::string _clickedFileName;
+    std::string _disabledFileName;
+    bool _prevIgnoreSize;
+    bool _scale9Enabled;
+    CCRect _capInsetsNormal;
+    CCRect _capInsetsPressed;
+    CCRect _capInsetsDisabled;
+    TextureResType _normalTexType;
+    TextureResType _pressedTexType;
+    TextureResType _disabledTexType;
+    CCSize _normalTextureSize;
+    CCSize _pressedTextureSize;
+    CCSize _disabledTextureSize;
+    bool _pressedActionEnabled;
+    ccColor3B _titleColor;
+    float _normalTextureScaleXInSize;
+    float _normalTextureScaleYInSize;
+    float _pressedTextureScaleXInSize;
+    float _pressedTextureScaleYInSize;
+    bool _normalTextureLoaded;
+    bool _pressedTextureLoaded;
+    bool _disabledTextureLoaded;
 };
 
-NS_CC_EXT_END
+}
 
-#endif /* defined(__CocoGUI__UIButton__) */
+NS_CC_END
+
+#endif /* defined(__CocoGUI__Button__) */

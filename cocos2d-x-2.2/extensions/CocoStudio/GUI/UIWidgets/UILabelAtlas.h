@@ -27,12 +27,15 @@
 
 #include "../BaseClasses/UIWidget.h"
 
-NS_CC_EXT_BEGIN
+NS_CC_BEGIN
+
+namespace ui {
+
 /**
-*   @js NA
-*   @lua NA
-*/
-class UICCLabelAtlas : public CCLabelAtlas
+ *   @js NA
+ *   @lua NA
+ */
+class CC_EX_DLL UICCLabelAtlas : public CCLabelAtlas
 {
 public:
     /**
@@ -49,41 +52,43 @@ public:
      * Allocates and initializes.
      */
     static UICCLabelAtlas* create();
-    void setProperty(const char *string, const char *charMapFile, unsigned int itemWidth, unsigned int itemHeight, unsigned int startCharMap);
-    void setProperty(const char *string, CCTexture2D *texture, unsigned int itemWidth, unsigned int itemHeight, unsigned int startCharMap);
+    void setProperty(const std::string& string, const std::string& charMapFile, unsigned int itemWidth, unsigned int itemHeight, unsigned int startCharMap);
+    void setProperty(const std::string& string, CCTexture2D *texture, unsigned int itemWidth, unsigned int itemHeight, unsigned int startCharMap);
     virtual void updateDisplayedOpacity(GLubyte opacity);
     virtual void draw(void);
 };
 /**
-*   @js NA
-*   @lua NA
-*/
-class UILabelAtlas : public UIWidget
+ *   @js NA
+ *   @lua NA
+ */
+class CC_EX_DLL LabelAtlas : public Widget
 {
+    DECLARE_CLASS_GUI_INFO
+    
 public:
     /**
      * Default constructor
      */
-    UILabelAtlas();
+    LabelAtlas();
     
     /**
      * Default destructor
      */
-    virtual ~UILabelAtlas();
+    virtual ~LabelAtlas();
     
     /**
      * Allocates and initializes.
      */
-    static UILabelAtlas* create();
+    static LabelAtlas* create();
     
-    /** initializes the UILabelAtlas with a string, a char map file(the atlas), the width and height of each element and the starting char of the atlas */
-    void setProperty(const char* stringValue,const char* charMapFile, int itemWidth, int itemHeight, const char* startCharMap,bool useSpriteFrame = false);
+    /** initializes the LabelAtlas with a string, a char map file(the atlas), the width and height of each element and the starting char of the atlas */
+    void setProperty(const std::string& stringValue,const std::string& charMapFile, int itemWidth, int itemHeight, const std::string& startCharMap);
     
     //set string value for labelatlas.
-    void setStringValue(const char* value);
+    void setStringValue(const std::string& value);
     
     //get string value for labelatlas.
-    const char* getStringValue();
+    const char* getStringValue() const;
     
     //override "setAnchorPoint" method of widget.
     virtual void setAnchorPoint(const CCPoint &pt);
@@ -97,15 +102,27 @@ public:
     /**
      * Returns the "class name" of widget.
      */
-    virtual const char* getDescription() const;
+    virtual std::string getDescription() const;
+    
 protected:
     virtual void initRenderer();
     virtual void onSizeChanged();
+    virtual void updateTextureColor();
+    virtual void updateTextureOpacity();
+    virtual void updateTextureRGBA();
     void labelAtlasScaleChangedWithSize();
+    virtual Widget* createCloneInstance();
+    virtual void copySpecialProperties(Widget* model);
 protected:
-    UICCLabelAtlas* m_pLaberAtlasRenderer;
+    UICCLabelAtlas* _labelAtlasRenderer;
+    std::string _stringValue;
+    std::string _charMapFileName;
+    int _itemWidth;
+    int _itemHeight;
+    std::string _startCharMap;
 };
 
-NS_CC_EXT_END
+}
+NS_CC_END
 
-#endif /* defined(__CocoGUI__UILabelAtlas__) */
+#endif /* defined(__CocoGUI__LabelAtlas__) */

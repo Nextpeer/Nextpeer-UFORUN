@@ -64,7 +64,6 @@ bool CCComponentContainer::add(CCComponent *pCom)
         {
             m_pComponents = CCDictionary::create();
             m_pComponents->retain();
-            m_pOwner->scheduleUpdate();
         }
         CCComponent *pComponent = dynamic_cast<CCComponent*>(m_pComponents->objectForKey(pCom->getName()));
         
@@ -103,6 +102,31 @@ bool CCComponentContainer::remove(const char *pName)
     } while(0);
     return bRet;
  }
+
+bool CCComponentContainer::remove(CCComponent *pCom)
+{
+    bool bRet = false;
+    do 
+    { 
+        CC_BREAK_IF(!m_pComponents);
+        CCDictElement *pElement = NULL;
+        CCDictElement *tmp = NULL;
+        HASH_ITER(hh, m_pComponents->m_pElements, pElement, tmp)
+        {
+            if (pElement->getObject() == pCom)
+            {
+                pCom->onExit();
+                pCom->setOwner(NULL);
+                HASH_DEL(m_pComponents->m_pElements, pElement);
+                pElement->getObject()->release();
+                CC_SAFE_DELETE(pElement);
+                break;
+            }
+        }
+        bRet = true;
+    } while (0);
+    return bRet;
+}
 
 void CCComponentContainer::removeAll()
 {
@@ -143,5 +167,8 @@ bool CCComponentContainer::isEmpty() const
 {
     return (bool)(!(m_pComponents && m_pComponents->count()));
 }
+
+
+
 
 NS_CC_END

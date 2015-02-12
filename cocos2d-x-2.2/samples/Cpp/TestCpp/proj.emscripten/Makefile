@@ -49,40 +49,61 @@ SOURCES = ../Classes/AccelerometerTest/AccelerometerTest.cpp \
 	../Classes/ExtensionsTest/ExtensionsTest.cpp \
 	../Classes/ExtensionsTest/NotificationCenterTest/NotificationCenterTest.cpp \
 	../Classes/ExtensionsTest/NetworkTest/HttpClientTest.cpp \
-    ../Classes/ExtensionsTest/CocoStudioArmatureTest/ArmatureScene.cpp \
+	../Classes/ExtensionsTest/CocoStudioArmatureTest/ArmatureScene.cpp \
+    ../Classes/ExtensionsTest/CocoStudioActionTimelineTest/ActionTimelineTestScene.cpp \
 	../Classes/ExtensionsTest/CocoStudioComponentsTest/ComponentsTestScene.cpp \
 	../Classes/ExtensionsTest/CocoStudioComponentsTest/EnemyController.cpp \
 	../Classes/ExtensionsTest/CocoStudioComponentsTest/GameOverScene.cpp \
 	../Classes/ExtensionsTest/CocoStudioComponentsTest/PlayerController.cpp \
 	../Classes/ExtensionsTest/CocoStudioComponentsTest/ProjectileController.cpp \
 	../Classes/ExtensionsTest/CocoStudioComponentsTest/SceneController.cpp \
-	../Classes/ExtensionsTest/CocoStudioGUITest/CocosGUIExamplesEquipScene.cpp \
-	../Classes/ExtensionsTest/CocoStudioGUITest/CocosGUIExamplesMapScene.cpp \
-	../Classes/ExtensionsTest/CocoStudioGUITest/CocosGUIExamplesPageScene.cpp \
-	../Classes/ExtensionsTest/CocoStudioGUITest/CocosGUIExamplesRegisterScene.cpp \
-	../Classes/ExtensionsTest/CocoStudioGUITest/CocosGUIExamplesScene.cpp \
-	../Classes/ExtensionsTest/CocoStudioGUITest/CocosGUIExamplesWeaponScene.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/CocoStudioGUITest.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/CocosGUIScene.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/GUIEditorTest.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/CustomGUIScene.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UIScene.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UISceneManager.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UIButtonTest/UIButtonTest.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UICheckBoxTest/UICheckBoxTest.cpp \
-	../Classes/ExtensionsTest/CocoStudioGUITest/UIDragPanelTest/UIDragPanelTest.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UIImageViewTest/UIImageViewTest.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UILabelAtlasTest/UILabelAtlasTest.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UILabelBMFontTest/UILabelBMFontTest.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UILabelTest/UILabelTest.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UIListViewTest/UIListViewTest.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UILoadingBarTest/UILoadingBarTest.cpp \
-	../Classes/ExtensionsTest/CocoStudioGUITest/UINodeContainerTest/UINodeContainerTest.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UIPageViewTest/UIPageViewTest.cpp \
-	../Classes/ExtensionsTest/CocoStudioGUITest/UIPanelTest/UIPanelTest.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UILayoutTest/UILayoutTest.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UIScrollViewTest/UIScrollViewTest.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UISliderTest/UISliderTest.cpp \
-	../Classes/ExtensionsTest/CocoStudioGUITest/UITextAreaTest/UITextAreaTest.cpp \
-	../Classes/ExtensionsTest/CocoStudioGUITest/UITextButtonTest/UITextButtonTest.cpp \
 	../Classes/ExtensionsTest/CocoStudioGUITest/UITextFieldTest/UITextFieldTest.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UIWidgetAddNodeTest/UIWidgetAddNodeTest.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UIRichTextTest/UIRichTextTest.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UIScene_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UISceneManager_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UIButtonTest/UIButtonTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UICheckBoxTest/UICheckBoxTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UIImageViewTest/UIImageViewTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UILabelAtlasTest/UILabelAtlasTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UILabelBMFontTest/UILabelBMFontTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UILabelTest/UILabelTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UIListViewTest/UIListViewTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UILoadingBarTest/UILoadingBarTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UIPageViewTest/UIPageViewTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UILayoutTest/UILayoutTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UIScrollViewTest/UIScrollViewTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UISliderTest/UISliderTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UITextFieldTest/UITextFieldTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/UIWidgetAddNodeTest/UIWidgetAddNodeTest_Editor.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/CustomWidget/CustomImageView.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/CustomWidget/CustomImageViewReader.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/CustomWidget/CustomReader.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/CustomTest/CustomImageTest/CustomImageTest.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/CustomWidget/CustomParticleWidget.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/CustomWidget/CustomParticleWidgetReader.cpp \
+	../Classes/ExtensionsTest/CocoStudioGUITest/CustomTest/CustomParticleWidgetTest/CustomParticleWidgetTest.cpp \
 	../Classes/ExtensionsTest/CocoStudioSceneTest/SceneEditorTest.cpp \
+	../Classes/ExtensionsTest/CocoStudioSceneTest/TriggerCode/acts.cpp \
+	../Classes/ExtensionsTest/CocoStudioSceneTest/TriggerCode/cons.cpp \
 	../Classes/FontTest/FontTest.cpp \
 	../Classes/IntervalTest/IntervalTest.cpp \
 	../Classes/KeypadTest/KeypadTest.cpp \
@@ -135,7 +156,6 @@ RESOURCES = \
 	Images/HelloWorld.png \
 	Images/Icon.png \
 	Images/Pea.png \
-	Images/PlanetCute-1024x1024.png \
 	Images/SendScoreButton.png \
 	Images/SendScoreButtonPressed.png \
 	Images/SpinningPeas.png \
@@ -207,7 +227,6 @@ RESOURCES = \
 	Images/hole_effect.png \
 	Images/hole_stencil.png \
 	Images/labelatlas.png \
-	Images/landscape-1024x1024.png \
 	Images/logo-mipmap.pvr \
 	Images/logo-nomipmap.pvr \
 	Images/menuitemsprite.png \
@@ -290,15 +309,6 @@ RESOURCES = \
 	Images/stars2.png \
 	Images/streak.png \
 	Images/test-rgba1.png \
-	Images/test_1021x1024.png \
-	Images/test_1021x1024_a8.pvr \
-	Images/test_1021x1024_a8.pvr.gz \
-	Images/test_1021x1024_rgb888.pvr \
-	Images/test_1021x1024_rgb888.pvr.gz \
-	Images/test_1021x1024_rgba4444.pvr \
-	Images/test_1021x1024_rgba4444.pvr.gz \
-	Images/test_1021x1024_rgba8888.pvr \
-	Images/test_1021x1024_rgba8888.pvr.gz \
 	Images/test_blend.png \
 	Images/test_image-bad_encoding.pvr \
 	Images/test_image.jpeg \
@@ -469,7 +479,7 @@ RESOURCES = \
 	fonts/west_england-64.fnt \
 	fonts/west_england-64.png \
 	fps_images.png \
-    fonts/bitmapFontTest.fnt \
+	fonts/bitmapFontTest.fnt \
 	zwoptex/grossini-generic.plist \
 	zwoptex/grossini-generic.png \
 	zwoptex/grossini.plist \

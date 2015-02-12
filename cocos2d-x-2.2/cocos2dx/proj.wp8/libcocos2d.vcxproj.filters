@@ -106,12 +106,6 @@
     <Filter Include="touch_dispatcher">
       <UniqueIdentifier>{7b1b3b9d-7307-4a5c-8e6c-40e96804ed08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="shaders\precompiled">
-      <UniqueIdentifier>{c75c0ee8-1351-4d18-97a3-5459dd8764e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="shaders\precompiled\wp8">
-      <UniqueIdentifier>{9944a9b0-eb9b-4bb9-9e67-9c3eb6144a72}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\actions\CCAction.cpp">
@@ -309,9 +303,6 @@
     <ClCompile Include="..\platform\wp8\CCEGLView.cpp">
       <Filter>platform\wp8</Filter>
     </ClCompile>
-    <ClCompile Include="..\platform\wp8\Direct3DBase.cpp">
-      <Filter>platform\wp8</Filter>
-    </ClCompile>
     <ClCompile Include="..\platform\winrt\CCAccelerometer.cpp">
       <Filter>platform\winrt</Filter>
     </ClCompile>
@@ -498,6 +489,16 @@
     <ClCompile Include="..\platform\wp8\WP8Keyboard.cpp">
       <Filter>platform\wp8</Filter>
     </ClCompile>
+    <ClCompile Include="..\platform\winrt\CCPrecompiledShaders.cpp">
+      <Filter>platform\winrt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\platform\winrt\sha1.cpp">
+      <Filter>platform\winrt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\platform\winrt\CCPThreadWinRT.cpp">
+      <Filter>platform\winrt</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\actions\CCAction.h">
@@ -734,9 +735,6 @@
     <ClInclude Include="..\platform\wp8\CCEGLView.h">
       <Filter>platform\wp8</Filter>
     </ClInclude>
-    <ClInclude Include="..\platform\wp8\Direct3DBase.h">
-      <Filter>platform\wp8</Filter>
-    </ClInclude>
     <ClInclude Include="..\platform\winrt\CCAccelerometer.h">
       <Filter>platform\winrt</Filter>
     </ClInclude>
@@ -952,11 +950,18 @@
     <ClInclude Include="..\platform\wp8\ModalLayer.h">
       <Filter>platform\wp8</Filter>
     </ClInclude>
-    <ClInclude Include="..\shaders\precompiled\wp8\ccShaders_wp8.h">
-      <Filter>shaders\precompiled\wp8</Filter>
-    </ClInclude>
     <ClInclude Include="..\platform\wp8\WP8Keyboard.h">
       <Filter>platform\wp8</Filter>
     </ClInclude>
+    <ClInclude Include="..\platform\winrt\CCPrecompiledShaders.h">
+      <Filter>platform\winrt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\platform\winrt\sha1.h">
+      <Filter>platform\winrt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\platform\winrt\CCPThreadWinRT.h">
+      <Filter>platform\winrt</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h" />
   </ItemGroup>
 </Project>

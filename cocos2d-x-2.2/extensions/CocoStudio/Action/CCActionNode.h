@@ -28,14 +28,19 @@
 #include "cocos2d.h"
 #include "ExtensionMacros.h"
 #include "CCActionFrame.h"
-#include "../Json/CSContentJsonDictionary.h"
-
+#include "../Json/DictionaryHelper.h"
+#include "../Json/rapidjson/document.h"
 NS_CC_EXT_BEGIN
+
+class CocoLoader;
+struct stExpCocoNode;
+
+
 /**
 *   @js NA
 *   @lua NA
 */
-class ActionNode:public CCObject
+class CC_EX_DLL ActionNode:public CCObject
 {
 public:
     
@@ -140,19 +145,28 @@ public:
 
     /**
      * Play the action.
-     *
-     * @param bloop   true the
      */
-	virtual void playAction(bool bloop);
-    
+	virtual void playAction();
+
     /**
      * Stop the action.
      */
 	virtual void stopAction();
 	
     /*init properties with a json dictionary*/
-    virtual void initWithDictionary(cs::CSJsonDictionary* dic,CCObject* root);
+	virtual void initWithDictionary(const rapidjson::Value& dic,CCObject* root);
+    virtual void initWithBinary(CocoLoader* pCocoLoader, stExpCocoNode*	pCocoNode, CCObject* root);
+    /**
+     * Gets if the action is done once time.
+     *
+	 * @return   that if the action is done once time
+     */
+	virtual bool isActionDoneOnce();
 protected:
+    int valueToInt(std::string& value);
+    bool valueToBool(std::string& value);
+    float valueToFloat(std::string& value);
+    
 	int currentFrameIndex;
 	int destFrameIndex;
 	
@@ -164,13 +178,13 @@ protected:
 	CCAction* m_action;
 	CCArray* m_FrameArray;
 	int frameArrayNum;
-    
+
 protected:
 	virtual CCNode* getActionNode();
 	virtual CCSpawn * refreshActionProperty();
 	virtual void runAction();
 	virtual void initActionNodeFromRoot(CCObject* root);
-	virtual void easingToFrame(float duration,float delayTime,ActionFrame* destFrame);
+	virtual void easingToFrame(float duration,float delayTime,ActionFrame* srcFrame,ActionFrame* destFrame);
 };
 
 NS_CC_EXT_END

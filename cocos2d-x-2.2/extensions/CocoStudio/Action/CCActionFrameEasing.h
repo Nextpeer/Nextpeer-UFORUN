@@ -27,7 +27,7 @@
 
 #include "cocos2d.h"
 #include "ExtensionMacros.h"
-#include "../Json/CSContentJsonDictionary.h"
+#include "../Json/DictionaryHelper.h"
 
 NS_CC_EXT_BEGIN
 
@@ -57,7 +57,7 @@ enum FrameEasingType
 *   @js NA
 *   @lua NA
 */
-class ActionFrameEasing:public cocos2d::CCObject
+class CC_EX_DLL ActionFrameEasing:public cocos2d::CCObject
 {
 protected:
 	FrameEasingType m_type;

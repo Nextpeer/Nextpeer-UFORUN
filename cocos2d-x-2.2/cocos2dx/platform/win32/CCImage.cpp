@@ -117,6 +117,21 @@ public:
                     nFindPos = fontName.rfind(".");
                     fontName = fontName.substr(0,nFindPos);                
                 }
+                else
+                {
+                    size_t nFindPos = fontName.rfind("/");
+                    if (nFindPos != fontName.npos)
+                    {
+                        if (fontName.length() == nFindPos + 1)
+                        {
+                            fontName = "";
+                        } 
+                        else
+                        {
+                            fontName = &fontName[nFindPos+1];
+                        }
+                    }
+                }
                 tNewFont.lfCharSet = DEFAULT_CHARSET;
                 strcpy_s(tNewFont.lfFaceName, LF_FACESIZE, fontName.c_str());
             }
@@ -421,10 +436,8 @@ bool CCImage::initWithString(
             for (int x = 0; x < m_nWidth; ++x)
             {
                 COLORREF& clr = *pPixel;
-                if (GetRValue(clr) || GetGValue(clr) || GetBValue(clr))
-                {
-                    clr |= 0xff000000;
-                }
+
+                clr |= (0xffffff | (GetRValue(clr) << 24));
                 ++pPixel;
             }
         }

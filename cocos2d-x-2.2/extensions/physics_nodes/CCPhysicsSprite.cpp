@@ -165,7 +165,7 @@ void CCPhysicsSprite::setIgnoreBodyRotation(bool bIgnoreBodyRotation)
 }
 
 // Override the setters and getters to always reflect the body's properties.
-const CCPoint& CCPhysicsSprite::getPosition() 
+const CCPoint& CCPhysicsSprite::getPosition()
 {
     updatePosFromPhysics();
     return CCNode::getPosition();

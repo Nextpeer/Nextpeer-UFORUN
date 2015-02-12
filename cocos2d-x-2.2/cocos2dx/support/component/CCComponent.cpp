@@ -55,8 +55,9 @@ void CCComponent::update(float delta)
 {
 }
 
-void CCComponent::serialize(void *ar)
+bool CCComponent::serialize(void *ar)
 {
+    return true;
 }
 
 CCComponent* CCComponent::create(void)
@@ -70,7 +71,7 @@ CCComponent* CCComponent::create(void)
     {
         CC_SAFE_DELETE(pRet);
     }
-	return pRet;
+    return pRet;
 }
 
 const char* CCComponent::getName() const
@@ -80,7 +81,7 @@ const char* CCComponent::getName() const
 
 void  CCComponent::setName(const char *pName)
 {
-	m_strName.assign(pName);
+    m_strName.assign(pName);
 }
 
 CCNode* CCComponent::getOwner() const
@@ -103,14 +104,5 @@ void CCComponent::setEnabled(bool b)
     m_bEnabled = b;
 }
 
-CCNode* CCComponent::getNode()
-{
-	return NULL;
-}
-
-void CCComponent::setNode(CCNode *pNode)
-{
-	CC_UNUSED_PARAM(pNode);
-}
 
 NS_CC_END

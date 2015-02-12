@@ -362,6 +362,12 @@ var ActionRotateXY = ActionsDemo.extend({
         this._grossini.runAction(cc.Sequence.create(actionBy, delay.clone(), actionBy.reverse()));
 
         this._kathia.runAction(cc.Sequence.create(actionBy2, delay.clone(), actionBy2.reverse()));
+
+        if (sys.platform === 'browser' && !("opengl" in sys.capabilities)) {
+            var label = cc.LabelTTF.create("Not support Actions on HTML5-canvas", "Times New Roman", 30);
+            label.setPosition(winSize.width / 2, winSize.height / 2 + 50);
+            this.addChild(label, 100);
+        }
     },
     title:function () {
         return "cc.RotateBy(x,y) / cc.RotateTo(x,y)";
@@ -450,22 +456,22 @@ var ActionSkewRotateScale = ActionsDemo.extend({
 
         var boxSize = cc.size(100.0, 100.0);
         var box = cc.LayerColor.create(cc.c4b(255, 255, 0, 255));
-        box.setAnchorPoint(cc.p(0, 0));
+        box.setAnchorPoint(0, 0);
         box.setPosition((winSize.width - boxSize.width) / 2, (winSize.height - boxSize.height) / 2);
         box.setContentSize(boxSize);
 
         var markrside = 10.0;
         var uL = cc.LayerColor.create(cc.c4b(255, 0, 0, 255));
         box.addChild(uL);
-        uL.setContentSize(cc.size(markrside, markrside));
+        uL.setContentSize(markrside, markrside);
         uL.setPosition(0, boxSize.height - markrside);
-        uL.setAnchorPoint(cc.p(0, 0));
+        uL.setAnchorPoint(0, 0);
 
         var uR = cc.LayerColor.create(cc.c4b(0, 0, 255, 255));
         box.addChild(uR);
-        uR.setContentSize(cc.size(markrside, markrside));
+        uR.setContentSize(markrside, markrside);
         uR.setPosition(boxSize.width - markrside, boxSize.height - markrside);
-        uR.setAnchorPoint(cc.p(0, 0));
+        uR.setAnchorPoint(0, 0);
 
 
         this.addChild(box);
@@ -1678,15 +1684,16 @@ var ActionCardinalSpline = ActionsDemo.extend({
         var winSize = director.getWinSize();
 
         if(!("opengl" in sys.capabilities)){
+            var locScaleX = cc.EGLView.getInstance().getScaleX(), locScaleY = cc.EGLView.getInstance().getScaleY();
             var apPoint = this.getAnchorPointInPoints();
             // move to 50,50 since the "by" path will start at 50,50
             context.save();
-            context.translate(50 , -50);
+            context.translate(50 * locScaleX , -50 * locScaleY);
             cc.drawingUtil.drawCardinalSpline(this._array, 0, 100);
             context.restore();
 
             context.save();
-            context.translate(winSize.width / 2 , -50);
+            context.translate((winSize.width * locScaleX) * 0.5 , -50 * locScaleY);
             cc.drawingUtil.drawCardinalSpline(this._array, 1, 100);
             context.restore();
         } else {
@@ -1843,9 +1850,10 @@ var ActionCatmullRom = ActionsDemo.extend({
         var context = ctx || cc.renderContext;
 
         if(!("opengl" in sys.capabilities)){
+            var eglViewer = cc.EGLView.getInstance();
             // move to 50,50 since the "by" path will start at 50,50
             context.save();
-            context.translate(50, - 50);
+            context.translate(50 * eglViewer.getScaleX(), - 50 * eglViewer.getScaleY());
             cc.drawingUtil.drawCatmullRom(this._array1, 50);
             context.restore();
 

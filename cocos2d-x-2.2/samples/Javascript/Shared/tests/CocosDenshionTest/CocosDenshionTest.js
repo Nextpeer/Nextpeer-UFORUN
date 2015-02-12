@@ -72,7 +72,6 @@ var DenshionTests = [
             return new addMusicVolume();
         }
     },
-
     {
         title:"Decrease Music Volume",
         playFunc:function () {
@@ -109,42 +108,36 @@ var DenshionTests = [
             return new addEffectsVolume();
         }
     },
-
     {
         title:"Decrease Sound Effect Volume",
         playFunc:function () {
             return new subEffectsVolume();
         }
     },
-
     {
         title:"Pause Sound Effect",
         playFunc:function () {
             return new pauseEffect();
         }
     },
-
     {
         title:"Resume Sound Effect",
         playFunc:function () {
             return new resumeEffect();
         }
     },
-
     {
         title:"Pause All Sound Effects",
         playFunc:function () {
             return new pauseAllEffects();
         }
     },
-
     {
         title:"Resume All Sound Effects",
         playFunc:function () {
             return new resumeAllEffects();
         }
     },
-
     {
         title:"Stop All Sound Effects",
         playFunc:function () {
@@ -153,7 +146,7 @@ var DenshionTests = [
     }
 ];
 
-CocosDenshionTest = cc.LayerGradient.extend({
+var CocosDenshionTest = cc.LayerGradient.extend({
     _itemMenu:null,
     _beginPos:cc.p(0, 0),
     _testCount:0,
@@ -163,15 +156,15 @@ CocosDenshionTest = cc.LayerGradient.extend({
         this.init(cc.c4b(0, 0, 0, 255), cc.c4b(148, 80, 120, 255));
 
         this._itemMenu = cc.Menu.create();
-        var s = director.getWinSize();
+        var winSize = director.getWinSize();
         for (var i = 0; i < DenshionTests.length; i++) {
             var label = cc.LabelTTF.create(DenshionTests[i].title, "Arial", 24);
             var menuItem = cc.MenuItemLabel.create(label, this.onMenuCallback, this);
             this._itemMenu.addChild(menuItem, i + 10000);
-            menuItem.setPosition(s.width / 2, (s.height - (i + 1) * LINE_SPACE));
+            menuItem.setPosition(winSize.width / 2, (winSize.height - (i + 1) * LINE_SPACE));
         }
         this._testCount = i;
-        this._itemMenu.setContentSize(cc.size(s.width, (this._testCount + 1) * LINE_SPACE));
+        this._itemMenu.setContentSize(winSize.width, (this._testCount + 1) * LINE_SPACE);
         this._itemMenu.setPosition(0, 0);
         this.addChild(this._itemMenu);
 
@@ -222,7 +215,7 @@ CocosDenshionTest = cc.LayerGradient.extend({
     }
 });
 
-CocosDenshionTestScene = TestScene.extend({
+var CocosDenshionTestScene = TestScene.extend({
     runThisTest:function () {
         audioEngine = cc.AudioEngine.getInstance();
         var layer = new CocosDenshionTest();

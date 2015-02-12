@@ -140,22 +140,15 @@ TMXOrthoTest::TMXOrthoTest()
 
         child->getTexture()->setAntiAliasTexParameters();
     }
-
-    float x, y, z;
-    map->getCamera()->getEyeXYZ(&x, &y, &z);
-    map->getCamera()->setEyeXYZ(x-200, y, z+300);    
 }
 
 void TMXOrthoTest::onEnter()
 {
     TileDemo::onEnter();
-
-    CCDirector::sharedDirector()->setProjection(kCCDirectorProjection3D);
 }
 
 void TMXOrthoTest::onExit()
 {
-    CCDirector::sharedDirector()->setProjection(kCCDirectorProjection2D);
     TileDemo::onExit();
 }
 
@@ -287,7 +280,11 @@ void TMXOrthoTest4::removeSprite(float dt)
     CCSize s = layer->getLayerSize();
 
     CCSprite* sprite = layer->tileAt( ccp(s.width-1,0) );
+    CCSprite* sprite2 = layer->tileAt(ccp(s.width-1, s.height-1));
     layer->removeChild(sprite, true);
+    CCSprite* sprite3 = layer->tileAt(ccp(2, s.height-1));
+    layer->removeChild(sprite3, true);
+    layer->removeChild(sprite2, true);
 }
 
 std::string TMXOrthoTest4::title()

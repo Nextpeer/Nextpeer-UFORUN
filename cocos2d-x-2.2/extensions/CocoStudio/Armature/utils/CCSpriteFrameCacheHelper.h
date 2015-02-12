@@ -34,7 +34,7 @@ NS_CC_EXT_BEGIN
 *   @js NA
 *   @lua NA
 */
-class  CCSpriteFrameCacheHelper
+class  CC_EX_DLL CCSpriteFrameCacheHelper
 {
 public:
     static CCSpriteFrameCacheHelper *sharedSpriteFrameCacheHelper();
@@ -47,13 +47,10 @@ public:
      */
     void addSpriteFrameFromFile(const char *plistPath, const char *imagePath);
 
-    CCTextureAtlas *getTexureAtlasWithTexture(CCTexture2D *texture);
 
 private:
     CCSpriteFrameCacheHelper();
     ~CCSpriteFrameCacheHelper();
-
-    CCDictionary *m_pTextureAtlasDic;
 
     static CCSpriteFrameCacheHelper *s_SpriteFrameCacheHelper;
 };

@@ -27,7 +27,9 @@
 
 #include "../BaseClasses/UIWidget.h"
 
-NS_CC_EXT_BEGIN
+NS_CC_BEGIN
+
+namespace ui {
 
 typedef enum
 {
@@ -38,23 +40,26 @@ typedef enum
 *   @js NA
 *   @lua NA
 */
-class UILoadingBar : public UIWidget
+class CC_EX_DLL LoadingBar : public Widget
 {
+    
+    DECLARE_CLASS_GUI_INFO
+    
 public:
     /**
      * Default constructor
      */
-    UILoadingBar();
+    LoadingBar();
     
     /**
      * Default destructor
      */
-    virtual ~UILoadingBar();
+    virtual ~LoadingBar();
     
     /**
      * Allocates and initializes.
      */
-    static UILoadingBar* create();
+    static LoadingBar* create();
     
     /**
      * Changes the progress direction of loadingbar.
@@ -104,12 +109,16 @@ public:
      */
     void setScale9Enabled(bool enabled);
     
+    bool isScale9Enabled();
+    
     /**
      * Sets capinsets for loadingbar, if loadingbar is using scale9 renderer.
      *
      * @param capInsets    capinsets for loadingbar
      */
     void setCapInsets(const CCRect &capInsets);
+    
+    const CCRect& getCapInsets();
     
     //override "ignoreContentAdaptWithSize" method of widget.
     virtual void ignoreContentAdaptWithSize(bool ignore);
@@ -123,34 +132,30 @@ public:
     /**
      * Returns the "class name" of widget.
      */
-    virtual const char* getDescription() const;
-    
-    /*Compatible*/
-    /**
-     * These methods will be removed
-     */
-    void setTexture(const char* texture,TextureResType texType = UI_TEX_TYPE_LOCAL){loadTexture(texture,texType);};
-    void setScale9Size(const CCSize& size){setScale9Enabled(true);setSize(size);};
-    void setScale9Enable(bool is){setScale9Enabled(is);};
-    /************/
+    virtual std::string getDescription() const;
 protected:
     virtual void initRenderer();
     virtual void onSizeChanged();
+    virtual void updateTextureColor();
+    virtual void updateTextureOpacity();
+    virtual void updateTextureRGBA();
     void setScale9Scale();
     void barRendererScaleChangedWithSize();
+    virtual Widget* createCloneInstance();
+    virtual void copySpecialProperties(Widget* model);
 protected:
-    LoadingBarType m_nBarType;
-    int m_nPercent;
-    float m_fTotalLength;
-    CCNode* m_pBarRenderer;
-    TextureResType m_eRenderBarTexType;
-    CCSize m_barRendererTextureSize;
-    bool m_bScale9Enabled;
-    bool m_bPrevIgnoreSize;
-    CCRect m_capInsets;
-    std::string m_strTextureFile;
+    LoadingBarType _barType;
+    int _percent;
+    float _totalLength;
+    CCNode* _barRenderer;
+    TextureResType _renderBarTexType;
+    CCSize _barRendererTextureSize;
+    bool _scale9Enabled;
+    bool _prevIgnoreSize;
+    CCRect _capInsets;
+    std::string _textureFile;
 };
 
-NS_CC_EXT_END
-
-#endif /* defined(__CocoGUI__UILoadingBar__) */
+}
+NS_CC_END
+#endif /* defined(__CocoGUI__LoadingBar__) */

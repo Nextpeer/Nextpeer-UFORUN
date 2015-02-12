@@ -30,16 +30,16 @@ THE SOFTWARE.
 #include "../datas/CCDatas.h"
 
 
-#if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT
+#if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT || ENABLE_PHYSICS_SAVE_CALCULATED_VERTEX
 #include "../physics/CCColliderDetector.h"
 #endif
 
 NS_CC_EXT_BEGIN
 /**
-*   @js NA
-*   @lua NA
-*/
-class  CCDecorativeDisplay: public CCObject
+ *  @js NA
+ *  @lua NA
+ */
+class  CC_EX_DLL CCDecorativeDisplay : public CCObject
 {
 public:
     static CCDecorativeDisplay *create();
@@ -54,7 +54,7 @@ protected:
     CC_SYNTHESIZE_RETAIN(CCNode *, m_pDisplay, Display);
     CC_SYNTHESIZE_RETAIN(CCDisplayData *, m_pDisplayData, DisplayData);
 
-#if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT
+#if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT || ENABLE_PHYSICS_SAVE_CALCULATED_VERTEX
     CC_SYNTHESIZE_RETAIN(CCColliderDetector *, m_pColliderDetector, ColliderDetector);
 #endif
 };

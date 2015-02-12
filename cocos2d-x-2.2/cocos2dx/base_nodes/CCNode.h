@@ -606,7 +606,7 @@ public:
      *
      * @return a CCNode object whose tag equals to the input parameter
      */
-    CCNode * getChildByTag(int tag);
+    virtual CCNode * getChildByTag(int tag);
     /**
      * Return an array of children
      *
@@ -630,7 +630,7 @@ public:
      *
      * @return The amount of children.
      */
-    unsigned int getChildrenCount(void) const;
+    virtual unsigned int getChildrenCount(void) const;
     
     /**
      * Sets the parent node
@@ -1007,7 +1007,7 @@ public:
      * @return A "local" axis aligned boudning box of the node.
      * @js getBoundingBox
      */
-    CCRect boundingBox(void);
+    virtual CCRect boundingBox(void);
 
     /// @{
     /// @name Actions
@@ -1370,6 +1370,11 @@ public:
      *   removes a component by its name      
      */
     virtual bool removeComponent(const char *pName);
+
+    /** 
+     *   removes a component by its pointer      
+     */
+    virtual bool removeComponent(CCComponent *pComponent);
     
     /**
      *   removes all components
@@ -1461,7 +1466,9 @@ protected:
 
 };
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 //#pragma mark - CCNodeRGBA
+#endif
 
 /** CCNodeRGBA is a subclass of CCNode that implements the CCRGBAProtocol protocol.
  

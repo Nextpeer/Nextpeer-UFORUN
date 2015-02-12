@@ -112,21 +112,6 @@ static AppDelegate s_sharedApplication;
     [Nextpeer handleRemoteNotification:userInfo];
 }
 
-// Takes care of local notifications received
-// when the game is running (even while backgrounded)
--(void)application:(UIApplication*)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
-    [Nextpeer handleLocalNotification:notification];
-}
-
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    return [Nextpeer handleOpenURL:url];
-}
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation  {
-    return [Nextpeer handleOpenURL:url];
-}
-
 #pragma mark -
 #pragma mark Memory management
 

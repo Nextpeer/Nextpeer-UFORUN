@@ -30,10 +30,9 @@ THE SOFTWARE.
 
 NS_CC_EXT_BEGIN
 /**
- *  @js NA
  *  @lua NA
  */
-class CCInputDelegate : public CCTouchDelegate, public CCAccelerometerDelegate, public CCKeypadDelegate
+class CC_EX_DLL CCInputDelegate : public CCTouchDelegate, public CCAccelerometerDelegate, public CCKeypadDelegate
 {
 protected:
     CCInputDelegate(void);
@@ -49,7 +48,9 @@ public:
     virtual void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent);
     virtual void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent);
     virtual void ccTouchesCancelled(CCSet *pTouches, CCEvent *pEvent);
-    
+    /**
+     *  @js NA
+     */
     virtual void didAccelerate(CCAcceleration* pAccelerationValue);
 public:
     virtual bool isTouchEnabled();

@@ -32,7 +32,7 @@ NS_CC_EXT_BEGIN
 /**
  *  @lua NA
  */
-class CCSkin : public CCSprite
+class CC_EX_DLL CCSkin : public CCSprite
 {
 public:
     static CCSkin *create();
@@ -54,9 +54,10 @@ public:
     CCAffineTransform nodeToWorldTransformAR();
 
     CC_PROPERTY_PASS_BY_REF(CCBaseData, m_sSkinData, SkinData);
-    CC_SYNTHESIZE(CCBone *, m_pBone, Bone);
+    CC_PROPERTY(CCBone *, m_pBone, Bone);
 
 protected:
+    CCArmature *m_pArmature;
     CCAffineTransform m_tSkinTransform;
     CC_SYNTHESIZE_READONLY(std::string, m_strDisplayName, DisplayName)
 };

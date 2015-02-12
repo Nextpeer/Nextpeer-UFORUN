@@ -36,6 +36,10 @@ THE SOFTWARE.
 #include "kazmath/GL/matrix.h"
 #include "kazmath/kazmath.h"
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
+#include "CCPrecompiledShaders.h"
+#endif
+
 NS_CC_BEGIN
 
 typedef struct _hashUniformEntry
@@ -51,6 +55,7 @@ CCGLProgram::CCGLProgram()
 , m_uFragShader(0)
 , m_pHashForUniforms(NULL)
 , m_bUsesTime(false)
+, m_hasShaderCompiler(true)
 {
     memset(m_uUniforms, 0, sizeof(m_uUniforms));
 }
@@ -81,6 +86,17 @@ CCGLProgram::~CCGLProgram()
 
 bool CCGLProgram::initWithVertexShaderByteArray(const GLchar* vShaderByteArray, const GLchar* fShaderByteArray)
 {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
+    GLboolean hasCompiler = false;
+    glGetBooleanv(GL_SHADER_COMPILER, &hasCompiler);
+    m_hasShaderCompiler = (hasCompiler == GL_TRUE);
+
+    if(!m_hasShaderCompiler)
+    {
+        return initWithPrecompiledProgramByteArray(vShaderByteArray,fShaderByteArray);
+    }
+#endif
+
     m_uProgram = glCreateProgram();
     CHECK_GL_ERROR_DEBUG();
 
@@ -91,7 +107,8 @@ bool CCGLProgram::initWithVertexShaderByteArray(const GLchar* vShaderByteArray, 
         if (!compileShader(&m_uVertShader, GL_VERTEX_SHADER, vShaderByteArray))
         {
             CCLOG("cocos2d: ERROR: Failed to compile vertex shader");
-        }
+ 			return false;
+       }
     }
 
     // Create and compile fragment shader
@@ -100,6 +117,7 @@ bool CCGLProgram::initWithVertexShaderByteArray(const GLchar* vShaderByteArray, 
         if (!compileShader(&m_uFragShader, GL_FRAGMENT_SHADER, fShaderByteArray))
         {
             CCLOG("cocos2d: ERROR: Failed to compile fragment shader");
+			return false;
         }
     }
 
@@ -117,25 +135,31 @@ bool CCGLProgram::initWithVertexShaderByteArray(const GLchar* vShaderByteArray, 
     
     CHECK_GL_ERROR_DEBUG();
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+    m_shaderId = CCPrecompiledShaders::sharedPrecompiledShaders()->addShaders(vShaderByteArray, fShaderByteArray);
+#endif
+
     return true;
 }
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
-bool CCGLProgram::initWithPrecompiledProgramByteArray(const GLchar* shaderByteArray, GLint length)
+bool CCGLProgram::initWithPrecompiledProgramByteArray(const GLchar* vShaderByteArray, const GLchar* fShaderByteArray)
 {
+    bool haveProgram = false;
+
     m_uProgram = glCreateProgram();
     CHECK_GL_ERROR_DEBUG();
 
     m_uVertShader = m_uFragShader = 0;
 
-    glProgramBinaryOES(m_uProgram, GL_PROGRAM_BINARY_ANGLE, shaderByteArray, length);
+    haveProgram = CCPrecompiledShaders::sharedPrecompiledShaders()->loadProgram(m_uProgram, vShaderByteArray, fShaderByteArray);
 
     CHECK_GL_ERROR_DEBUG();
     m_pHashForUniforms = NULL;
-    
-    CHECK_GL_ERROR_DEBUG();
 
-    return true;
+    CHECK_GL_ERROR_DEBUG();  
+
+    return haveProgram;
 }
 #endif
 
@@ -166,7 +190,11 @@ bool CCGLProgram::compileShader(GLuint * shader, GLenum type, const GLchar* sour
     
     const GLchar *sources[] = {
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32 && CC_TARGET_PLATFORM != CC_PLATFORM_LINUX && CC_TARGET_PLATFORM != CC_PLATFORM_MAC)
+#if CC_TARGET_PLATFORM == CC_PLATFORM_NACL
+        "precision highp float;\n"
+#else
         (type == GL_VERTEX_SHADER ? "precision highp float;\n" : "precision mediump float;\n"),
+#endif
 #endif
         "uniform mat4 CC_PMatrix;\n"
         "uniform mat4 CC_MVMatrix;\n"
@@ -204,7 +232,11 @@ bool CCGLProgram::compileShader(GLuint * shader, GLenum type, const GLchar* sour
         }
         free(src);
 
-        abort();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+        return false;
+#else
+		abort();
+#endif
     }
     return (status == GL_TRUE);
 }
@@ -243,7 +275,15 @@ void CCGLProgram::updateUniforms()
 bool CCGLProgram::link()
 {
     CCAssert(m_uProgram != 0, "Cannot link invalid program");
-    
+ 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
+    if(!m_hasShaderCompiler)
+    {
+        // precompiled shader program is already linked
+        return true;
+    }
+#endif
+
     GLint status = GL_TRUE;
     
     glLinkProgram(m_uProgram);
@@ -259,18 +299,25 @@ bool CCGLProgram::link()
     }
     
     m_uVertShader = m_uFragShader = 0;
-	
-#if DEBUG || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
+#if (defined(COCOS2D_DEBUG) && COCOS2D_DEBUG) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
     glGetProgramiv(m_uProgram, GL_LINK_STATUS, &status);
-	
+
     if (status == GL_FALSE)
     {
-        CCLOG("cocos2d: ERROR: Failed to link program: %i", m_uProgram);
+        CCLOG("cocos2d: ERROR: Failed to link program: %i\n%s", m_uProgram, programLog());
         ccGLDeleteProgram(m_uProgram);
         m_uProgram = 0;
     }
 #endif
-	
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+    if (status == GL_TRUE)
+    {
+        CCPrecompiledShaders::sharedPrecompiledShaders()->addProgram(m_uProgram, m_shaderId);
+    }
+#endif
+
+
     return (status == GL_TRUE);
 }
 

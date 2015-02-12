@@ -74,14 +74,14 @@ var Paddle = cc.Sprite.extend({
         // to the touch from touchBegan and check that the current touch is the same
         // as that one.
         // Actually, it would be even more complicated since in the Cocos dispatcher
-        // you get CCSets instead of 1 UITouch, so you'd need to loop through the set
+        // you get Array instead of 1 cc.Touch, so you'd need to loop through the set
         // in each touchXXX method.
         cc.Assert(this._state == PADDLE_STATE_GRABBED, "Paddle - Unexpected state!");
 
         var touchPoint = touch.getLocation();
         //touchPoint = cc.Director.getInstance().convertToGL( touchPoint );
 
-        this.setPosition(cc.p(touchPoint.x, this.getPosition().y));
+        this.setPosition(touchPoint.x, this.getPosition().y);
     },
     onTouchEnded:function (touch, event) {
         cc.Assert(this._state == PADDLE_STATE_GRABBED, "Paddle - Unexpected state!");

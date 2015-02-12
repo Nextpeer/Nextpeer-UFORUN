@@ -98,6 +98,8 @@ public:
     virtual int executeEvent(int nHandler, const char* pEventName, CCObject* pEventSource = NULL, const char* pEventSourceClassName = NULL) { return 0; }
 
     virtual bool handleAssert(const char *msg) { return false; }
+    
+    virtual bool parseConfig(ConfigType type, const std::string& str);
 
     bool executeFunctionWithObjectData(CCNode *self, const char *name, JSObject *obj);
     JSBool executeFunctionWithOwner(jsval owner, const char *name, uint32_t argc = 0, jsval* vp = NULL, jsval* retVal = NULL);
@@ -292,7 +294,7 @@ public:
         // JS_EncodeString isn't supported in SpiderMonkey ff19.0.
         //buffer = JS_EncodeString(cx, string);
         unsigned short* pStrUTF16 = (unsigned short*)JS_GetStringCharsZ(cx, str);
-        buffer = cc_utf16_to_utf8(pStrUTF16, -1, NULL, NULL);
+        buffer = cc_utf16_to_utf8(pStrUTF16);
 	}
 	std::string get() {
         return buffer;

@@ -3,7 +3,7 @@ This open-source Cocos2d-X game will show you how to develop a cross platform (i
 
 Check our [YouTube](https://www.youtube.com/watch?v=4ALEdiORJ6s) game trailer for a quick look!
 
-Read the full [tutorial](https://www.nextpeer.com/ufo-run-tutorial/) or just go ahead and download the source.
+Read the full [tutorial](https://nextpeer.atlassian.net/wiki/display/NS/How+to+Make+a+Game+Like+Fun+Run+using+Nextpeer) or just go ahead and download the source.
 
 # Trying it out
 

@@ -1,9 +1,9 @@
 # Welcome to UFO RUN
 This open-source Cocos2d-X game will show you how to develop a cross platform (iOS/Android) real-time multiplayer game with [Nextpeer](https://www.nextpeer.com/). With Nextpeer you can play with your friends or get matched with random players from around the world!
 
-Check our [YouTube](https://www.youtube.com/watch?v=4ALEdiORJ6s) game trailer for a quick look!
+Check the game in [iTunes](https://itunes.apple.com/us/app/nextpeer-ufo-run-multiplayer/id901805404?mt=8) for a quick look!
 
-Read the full [tutorial](https://www.nextpeer.com/ufo-run-tutorial/) or just go ahead and download the source.
+Read the full [tutorial](https://nextpeer.atlassian.net/wiki/display/NS/How+to+Make+a+Game+Like+Fun+Run+using+Nextpeer) or just go ahead and download the source.
 
 # Trying it out
 

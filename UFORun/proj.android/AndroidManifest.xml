@@ -38,10 +38,6 @@
         
         <activity android:name="com.nextpeer.android.NextpeerActivity" android:screenOrientation="portrait"/>
         
-        <activity android:name="com.nextpeer.android.facebook.LoginActivity"
-                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
-                  android:label="@string/np__application_name" android:screenOrientation="landscape"/>
-        
         <service android:name="com.nextpeer.android.NextpeerPushService" />
         <receiver android:name="com.nextpeer.android.NextpeerBroadcastReceiver">
             <intent-filter>

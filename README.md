@@ -9,7 +9,7 @@ Read the full [tutorial](https://nextpeer.atlassian.net/wiki/display/NS/How+to+M
 
 1. Pull UFO RUN and its **submodules** from GitHub:
 
-	`git clone --recursive git@github.com:Nextpeer/Nextpeer-UFORUN.git`
+	`git clone --recursive https://github.com/Nextpeer/Nextpeer-UFORUN.git`
 2. Change the project's bundle/package identifier from "com.nextpeer.uforun" to your own domain (for example "com.mycompany.uforun") in the project's info.plist & AndroidManifest.xml.
 3. Navigate to [Nextpeer developers dashboard](https://developers.nextpeer.com), sign up for an account, and create your iOS and an Android game.
 4. In Nextpeer's dashboard, add a game pool and connect both games you've created in step #3. That's how the users from each platform will be able to play with each other.
